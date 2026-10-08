@@ -92,7 +92,7 @@
 }
 
 /*
- * V5: the new top nav (also used by New inventories V2, hence data-topnav rather than
+ * V5: the new top nav (also used by the New inventories, hence data-topnav rather than
  * the version). The selected tab is a folder-tab shape that runs into the
  * page below it, with a filled icon and no tile; the others keep their tiles.
  * Once scrolled it behaves like V2: the icons and the shape fade away and only

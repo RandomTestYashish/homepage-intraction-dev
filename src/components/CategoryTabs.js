@@ -34,13 +34,6 @@ const boxShape = (tone, line = tone) => `
     <path d="${BOX_FILL}" fill="url(#tab5-fill-${tone})" />
     <path d="${BOX_LINE}" stroke="url(#tab5-line-${line})" />
   </g>`;
-// New inventories V1 puts a peach tab around the selected tile instead. Same idea as the
-// V5 shape: the Figma path with the tab's left edge at x = 0, 8px wider than the tile on
-// each side, and a base band that runs past both edges of the screen.
-const PEACH_INSET = 8;
-const PEACH_SHAPE =
-  "M-600 108H-12C-5.373 108 0 102.627 0 96V24C0 10.745 10.745 0 24 0H56C69.255 0 80 10.745 80 24V96" +
-  "C80 102.627 85.373 108 92 108H900V145.65H-600Z";
 const toneOf = (tab) => (tab.dataset.tab === "0" ? "red" : "blue");
 
 const selectedLayers = [...Array(4).fill("tab-selected-bg.svg"), "tab-selected-bg2.svg"]
@@ -67,9 +60,6 @@ export function CategoryTabs() {
         ${boxShape("red")}
         ${boxShape("blue")}
         ${boxShape("peach", "red")}
-      </svg>
-      <svg class="category-tabs__peach" aria-hidden="true" width="80" height="146" viewBox="0 0 80 146" fill="none">
-        <path d="${PEACH_SHAPE}" fill="#FFE7CD" />
       </svg>
       <div class="rail__track">
         ${TABS.map(
@@ -107,7 +97,6 @@ export function CategoryTabs() {
   // the track's own offset plus its place along the tabs, and either can move at once.
   const indicator = root.querySelector(".category-tabs__indicator");
   const box = root.querySelector(".category-tabs__box");
-  const peach = root.querySelector(".category-tabs__peach");
   const lineX = (tab) => tab.offsetLeft + (tab.offsetWidth - indicator.offsetWidth) / 2;
   let selected = root.querySelector('.category-tab[aria-selected="true"]');
   let trackX = 0;
@@ -118,7 +107,6 @@ export function CategoryTabs() {
     indicator.style.transform = `translate3d(${trackX + indicatorX}px, 0, 0)`;
     const lineInset = (selected.offsetWidth - indicator.offsetWidth) / 2;
     box.style.transform = `translate3d(${trackX + indicatorX - lineInset - BOX_INSET}px, 0, 0)`;
-    peach.style.transform = `translate3d(${trackX + indicatorX - lineInset - PEACH_INSET}px, 0, 0)`;
   };
 
   // Five fixed destinations: this rail has a start and an end rather than looping.

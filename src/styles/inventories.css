@@ -10,7 +10,7 @@
 [data-variant="n1"] {
   --strip-full: 106px; /* the strip's own height below the status bar */
   --strip-h: 106px; /* how much of it is uncovered; App.js brings this from 0 to full */
-  --page-top: calc(var(--status-bar-h) + var(--strip-h) + 77px); /* the tab's top, 77px below the sheet's */
+  --page-top: calc(var(--status-bar-h) + var(--strip-h) + 75px); /* the tab shape's top, 75px below the sheet's */
 }
 
 .top-strip,
@@ -177,32 +177,14 @@
   filter: brightness(0) invert(1);
 }
 
-/* ---------- Category tabs: a peach tab around the selected one ---------- */
-.category-tabs__peach {
-  display: none;
-  position: absolute;
-  top: 0;
-  left: 0;
-  overflow: visible;
-  opacity: calc(1 - 1.6 * var(--compact)); /* leaves as the tiles shrink */
-  pointer-events: none;
-  will-change: transform;
+/* ---------- Category tabs ---------- */
+/* Both versions use V5's folder-tab shape (sections.css), in peach with the red outline */
+[data-variant^="n"] .category-tabs .category-tabs__box g[data-tone] {
+  opacity: 0;
 }
 
-[data-variant="n1"] .category-tabs__peach {
-  display: block;
-}
-
-/* The peach tab starts 8px above the tiles, so the row is that much taller at the top;
-   pinned, the tiles keep the usual 14px above them. */
-[data-variant="n1"] .category-tabs {
-  --compact-pad: 6px;
-  height: 118px;
-  padding-top: 8px;
-}
-
-[data-variant="n1"] .category-tabs__indicator {
-  opacity: var(--compact); /* the line only belongs to the pinned state */
+[data-variant^="n"] .category-tabs .category-tabs__box g[data-tone="peach"] {
+  opacity: 1;
 }
 
 /* ---------- Page ---------- */
@@ -222,7 +204,7 @@
   }
 }
 
-/* Welcome: the tab's peach runs straight into this wash */
+/* Welcome: the tab shape's peach runs straight into this wash */
 .page[data-view="strip"] > .welcome1 {
   position: relative;
   height: 340px;
@@ -305,17 +287,8 @@
 }
 
 /* ---------- V2: Ticket tape ---------- */
-/* Its top nav is V5's folder-tab shape (sections.css), in peach with the red outline */
 [data-variant="n2"] {
   --page-top: calc(var(--status-bar-h) + 117px); /* the tab shape starts 8px under the tape */
-}
-
-[data-variant="n2"] .category-tabs .category-tabs__box g[data-tone] {
-  opacity: 0;
-}
-
-[data-variant="n2"] .category-tabs .category-tabs__box g[data-tone="peach"] {
-  opacity: 1;
 }
 
 /* A white rectangle of its own: App.js keeps it under the header and then stuck at the
