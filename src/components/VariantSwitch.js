@@ -16,7 +16,10 @@ const GROUPS = [
   {
     title: "New inventories",
     short: "New",
-    variants: [{ id: "n1", name: "V1", text: "Top Strip" }],
+    variants: [
+      { id: "n1", name: "V1", text: "Top Strip" },
+      { id: "n2", name: "V2", text: "Ticket tape" },
+    ],
   },
 ];
 const VARIANTS = GROUPS.flatMap((group) => group.variants);

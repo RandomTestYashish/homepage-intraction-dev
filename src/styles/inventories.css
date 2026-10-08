@@ -1,7 +1,10 @@
 /*
- * New inventories V1: the Top Strip for events and new launches. The strip lies behind
- * a white sheet that holds the header and the page; --strip-h is how much of it shows
- * above the sheet at the top of the page. Positions mirror the Figma frame.
+ * New inventories. The versions share one page and the peach tab around the selected
+ * category; each adds its own inventory above them. Positions mirror the Figma frames.
+ *
+ * V1 (n1), Top Strip: a strip for events and new launches lies behind a white sheet that
+ * holds the header and the page; --strip-h is how much of it shows above the sheet.
+ * V2 (n2), Ticket tape: a line of text runs right to left under the header.
  */
 
 [data-variant="n1"] {
@@ -186,19 +189,19 @@
   will-change: transform;
 }
 
-[data-variant="n1"] .category-tabs__peach {
+[data-variant^="n"] .category-tabs__peach {
   display: block;
 }
 
 /* The peach tab starts 8px above the tiles, so the row is that much taller at the top;
    pinned, the tiles keep the usual 14px above them. */
-[data-variant="n1"] .category-tabs {
+[data-variant^="n"] .category-tabs {
   --compact-pad: 6px;
   height: 118px;
   padding-top: 8px;
 }
 
-[data-variant="n1"] .category-tabs__indicator {
+[data-variant^="n"] .category-tabs__indicator {
   opacity: var(--compact); /* the line only belongs to the pinned state */
 }
 
@@ -299,4 +302,69 @@
 
 .page[data-view="strip"] > .services5 {
   margin-top: 32px;
+}
+
+/* ---------- V2: Ticket tape ---------- */
+[data-variant="n2"] {
+  --page-top: calc(var(--status-bar-h) + 126px); /* 49px lower than usual, for the tape */
+}
+
+/* Lives in the header, so it leaves and returns with it */
+.ticker {
+  display: none;
+  position: absolute;
+  top: 74.8px;
+  left: 0;
+  width: 100%;
+  height: 33.4px;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-surface);
+  /* The text fades out towards both edges of the screen */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 76px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 76px), transparent);
+}
+
+[data-variant="n2"] .ticker {
+  display: block;
+}
+
+/* Red to gold across the screen, not along the text: the colour stays put while the
+   words move through it. The text is black on white and this layer is screened over it. */
+.ticker::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #d40000 19.7%, #f4b60b 115.7%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.ticker__track {
+  display: flex;
+  width: max-content;
+  padding-top: 5.7px;
+  font-size: var(--fs-14);
+  font-weight: 500;
+  line-height: 22px;
+  white-space: pre;
+  color: #000;
+  animation: ticker-run 18s linear infinite;
+  will-change: transform;
+}
+
+.ticker__item b {
+  font-weight: 700;
+}
+
+@keyframes ticker-run {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker__track {
+    animation: none;
+  }
 }

@@ -33,6 +33,9 @@ A second dropdown, "New inventories", holds prototypes of new homepage inventory
 (`?v=n1`) puts a strip for events and new launches above the app. The homepage starts at the top,
 covering it, comes down off it after one second, and slides back up over it as the page scrolls (`src/components/TopStripPage.js`, `src/styles/inventories.css`).
 
+**V2 – Ticket tape** (`?v=n2`) runs "Zakir Khan Live • Airtel postpaid the advantage club" right to left
+under the header, in a loop.
+
 The Refresh button at the top right of the desktop preview (a round pill above the dropdowns on a
 phone) replays the current version from its start.
 

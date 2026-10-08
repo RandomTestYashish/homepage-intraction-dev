@@ -77,13 +77,13 @@ export function App() {
 
   // V1–V4 show the home sections whatever tab is selected. V5 has its own pages
   // under the tabs: the Prepaid page for Prepaid, and its All page for the rest.
-  // The Top Strip version has one page of its own.
+  // The New inventories versions share one page of their own.
   const PREPAID_TAB = 1;
   let selectedTab = 0;
   function showView() {
     const variant = screen.dataset.variant;
     const v5View = selectedTab === PREPAID_TAB ? "prepaid" : "all";
-    const view = variant === STRIP_VARIANT ? "strip" : variant === "5" ? v5View : "home";
+    const view = variant.startsWith("n") ? "strip" : variant === "5" ? v5View : "home"; // n… = New inventories
     if (page.dataset.view === view) return;
     page.dataset.view = view;
     page.scrollTop = 0; // a different page starts from its top
@@ -268,7 +268,8 @@ export function App() {
   // glass surfaces on the header, tabs and bottom nav (chrome.css); V4 is V1 with a
   // bottom nav that shrinks in place instead of hiding; V5 has the new top nav, whose
   // selected tab is a folder-tab shape, and on scroll keeps only the titles, as V2 does.
-  // New inventories V1 (inventories.css) puts a strip for events above the whole app.
+  // New inventories V1 (inventories.css) puts a strip for events above the whole app;
+  // V2 runs a ticker tape under the header instead.
   stage.append(VariantSwitch({ onChange: setVariant }));
 
   // Refresh replays the current version from its start: back at the top and, for the
