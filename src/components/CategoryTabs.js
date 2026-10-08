@@ -1,5 +1,5 @@
 import { asset, el } from "../lib/dom.js";
-import { animate, transition } from "../lib/motion.js";
+import { animate, reducedMotion, transition } from "../lib/motion.js";
 import { createRail } from "../lib/rail.js";
 
 const TABS = [
@@ -130,10 +130,15 @@ export function CategoryTabs() {
     });
     rail.centreOn(tab);
 
+    // V5 bounces: the shape springs past the new tab and back, and the icon pops in.
+    const bouncy = root.closest("[data-variant]")?.dataset.variant === "5";
+    const icon = bouncy && tab.querySelector(".category-tab__icon--filled, .category-tab__icon");
+    if (icon && !reducedMotion.matches) animate(icon, { scale: [0.7, 1] }, transition("iconPop"));
+
     // A tap mid-slide carries on from wherever the line has reached.
     slide?.stop();
     slide = animate(indicatorX, lineX(tab), {
-      ...transition("indicator"),
+      ...transition(bouncy ? "tabBounce" : "indicator"),
       onUpdate(value) {
         indicatorX = value;
         placeIndicator();
