@@ -95,16 +95,83 @@
 }
 
 /* ---------- Version switch (desktop preview only) ---------- */
-.variant-switch {
+.variant-menu {
   position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+/* The dropdown's own button: its name, the version showing, and a chevron */
+.variant-menu__toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.86);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.variant-menu__toggle:hover,
+.variant-menu__toggle[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.variant-menu__toggle:focus-visible {
+  outline-color: #fff;
+}
+
+.variant-menu__current {
+  padding: 0 6px;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  color: #111;
+}
+
+.variant-menu__chevron {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.variant-menu__toggle[aria-expanded="true"] .variant-menu__chevron {
+  transform: rotate(180deg);
+}
+
+.variant-switch {
   display: flex;
   flex-direction: column;
   gap: 8px;
   padding: 0;
   margin: 0;
   border: 0;
+  animation: variant-list-in var(--dur-fast) var(--ease-out);
+}
+
+.variant-switch[hidden] {
+  display: none;
+}
+
+@keyframes variant-list-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .variant-switch {
+    animation: none;
+  }
 }
 
 .variant-switch__button {
@@ -188,14 +255,16 @@
   border-radius: 0;
 }
 
-/* On phones the version switch floats over the design: a slim pill at the right edge,
-   halfway down, clear of the header, the category row and the bottom navigation. */
-.is-mobile .variant-switch {
+/* On phones the dropdown floats over the design: a slim pill at the right edge, clear of
+   the header, the category row and the bottom navigation. Closed, it shows only the
+   current version; open, the list drops down from it and the pill grows to hold it. */
+.is-mobile .variant-menu {
   position: fixed;
   z-index: 60;
-  top: 50%;
+  top: 38%;
   right: 6px;
   left: auto;
+  align-items: stretch;
   gap: 2px;
   padding: 3px;
   border-radius: 20px;
@@ -203,7 +272,42 @@
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
-  transform: translateY(-50%);
+}
+
+.is-mobile .variant-menu__toggle {
+  position: relative;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 17px;
+  background: none;
+}
+
+.is-mobile .variant-menu__toggle::after {
+  content: "";
+  position: absolute;
+  inset: -4px -6px -1px -10px;
+}
+
+.is-mobile .variant-menu__title,
+.is-mobile .variant-menu__chevron,
+.is-mobile .variant-menu__toggle[aria-expanded="true"] {
+  display: none; /* open, the list itself marks the current version */
+}
+
+.is-mobile .variant-menu__current {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border-radius: 17px;
+}
+
+.is-mobile .variant-switch {
+  gap: 2px;
 }
 
 .is-mobile .variant-switch__text {

@@ -18,8 +18,8 @@ Then open http://localhost:3000.
 On a desktop browser the screen is shown inside an iPhone mockup. On a phone the mockup is dropped and
 the screen fills the browser. Add `?view=mobile` or `?view=mockup` to the URL to force either mode.
 
-Five versions are switchable from the buttons at the top left of the desktop preview, from the small
-V1 / V2 / V3 / V4 / V5 pill at the right edge on a phone, or with `?v=2` / `?v=3` / `?v=4` / `?v=5`:
+Five versions are switchable from the "Homepage interaction" dropdown at the top left of the desktop
+preview, from the small current-version pill at the right edge on a phone (tap it for the list), or with `?v=2` / `?v=3` / `?v=4` / `?v=5`:
 **V1** shrinks the category tab icons once the page is scrolled; **V2** hides them and keeps only the titles;
 **V3** is V1 with an iOS-style glass background on the header, category tabs and bottom navigation;
 **V4** is V1 with a bottom navigation that never hides: its bar scales down in place while the page is
