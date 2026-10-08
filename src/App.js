@@ -18,6 +18,7 @@ import { PhoneFrame } from "./components/PhoneFrame.js";
 import { PrepaidPage } from "./components/PrepaidPage.js";
 import { ProductShowcase } from "./components/ProductShowcase.js";
 import { StatusBar } from "./components/StatusBar.js";
+import { TopStrip, TopStripPage } from "./components/TopStripPage.js";
 import { VariantSwitch } from "./components/VariantSwitch.js";
 
 const BUY_PRODUCTS = [
@@ -45,6 +46,9 @@ const TABS_NORMAL_AT = 9; // …and they stay small until the page is back up he
 const NAV_SHRUNK = 0.86; // V4: how small the bottom nav bar gets while the page is scrolling
 const TABS_INSET = 16; // where the first category tab starts…
 const TABS_INSET_V5 = 24; // …and where it starts in V5, whose tabs are spaced wider
+const STRIP_VARIANT = "n1"; // New inventories V1: the Top Strip
+const STRIP_HEIGHT = 106; // how much of the strip shows above the sheet at the top of the page
+const STRIP_HEADER_RANGE = 40; // the header may only start leaving over the strip's last 40px
 
 export function App() {
   const { stage, screen } = PhoneFrame();
@@ -67,14 +71,18 @@ export function App() {
     ProductShowcase(),
     ...AllPageV5({ products: BUY_PRODUCTS }),
     ...PrepaidPage(),
+    ...TopStripPage(),
   );
 
   // V1–V4 show the home sections whatever tab is selected. V5 has its own pages
   // under the tabs: the Prepaid page for Prepaid, and its All page for the rest.
+  // The Top Strip version has one page of its own.
   const PREPAID_TAB = 1;
   let selectedTab = 0;
   function showView() {
-    const view = screen.dataset.variant !== "5" ? "home" : selectedTab === PREPAID_TAB ? "prepaid" : "all";
+    const variant = screen.dataset.variant;
+    const v5View = selectedTab === PREPAID_TAB ? "prepaid" : "all";
+    const view = variant === STRIP_VARIANT ? "strip" : variant === "5" ? v5View : "home";
     if (page.dataset.view === view) return;
     page.dataset.view = view;
     page.scrollTop = 0; // a different page starts from its top
@@ -95,7 +103,10 @@ export function App() {
     onSelect: () => page.scrollTo({ top: 0, behavior: "smooth" }),
   });
 
-  screen.append(page, StatusBar(), header, bottomNav, menu.element);
+  // The strip and the sheet over it lie behind the page; only the Top Strip version shows them.
+  const strip = TopStrip();
+  const sheet = el(`<div class="strip-sheet"></div>`);
+  screen.append(strip, sheet, page, StatusBar(), header, bottomNav, menu.element);
 
   // Scroll-linked: the hero card recedes very slightly as the page moves under the header.
   const heroCard = hero.querySelector(".nba__card");
@@ -121,13 +132,22 @@ export function App() {
     pageTop = parseFloat(getComputedStyle(page).paddingTop);
     layoutChrome();
   }
+  const hasStrip = () => screen.dataset.variant === STRIP_VARIANT;
   function layoutChrome() {
-    const visible = HEADER_HEIGHT * headerShown;
-    header.style.transform = `translate3d(0, ${visible - HEADER_HEIGHT}px, 0)`; // translateY(-100%) when hidden
-    header.style.opacity = 0.6 + 0.4 * headerShown;
+    // Top Strip: the sheet, with the header on it, rides up over the strip as the page
+    // scrolls, and the header stays put until the strip is nearly covered.
+    const stripLeft = hasStrip() ? Math.max(0, STRIP_HEIGHT - scrollY) : 0;
+    const shown = Math.max(headerShown, Math.min(1, stripLeft / STRIP_HEADER_RANGE));
+    sheet.style.transform = `translate3d(0, ${stripLeft}px, 0)`;
+    const stripState = stripLeft > statusBar / 2 ? "open" : "closed";
+    if (screen.dataset.strip !== stripState) screen.dataset.strip = stripState;
+
+    const visible = HEADER_HEIGHT * shown;
+    header.style.transform = `translate3d(0, ${visible - HEADER_HEIGHT + stripLeft}px, 0)`; // translateY(-100%) when hidden
+    header.style.opacity = 0.6 + 0.4 * shown;
 
     const pinned = Math.max(pageTop - scrollY, statusBar); // where position: sticky puts the tabs
-    const clearance = Math.max(0, statusBar + visible - pinned);
+    const clearance = Math.max(0, statusBar + stripLeft + visible - pinned);
     tabs.style.transform = clearance ? `translate3d(0, ${clearance}px, 0)` : "";
   }
 
@@ -194,7 +214,7 @@ export function App() {
     onProgress(y) {
       screen.dataset.scrolled = String(y > 4);
       linkHero(y);
-      linkTabs(y);
+      linkTabs(hasStrip() ? y - STRIP_HEIGHT : y); // the tabs stay full size while the strip is leaving
     },
     onScroll(y) {
       scrollY = y;
@@ -212,6 +232,7 @@ export function App() {
   // glass surfaces on the header, tabs and bottom nav (chrome.css); V4 is V1 with a
   // bottom nav that shrinks in place instead of hiding; V5 has the new top nav, whose
   // selected tab is a folder-tab shape, and on scroll keeps only the titles, as V2 does.
+  // New inventories V1 (inventories.css) puts a strip for events above the whole app.
   stage.append(VariantSwitch({ onChange: setVariant }));
 
   revealOnScroll(page);

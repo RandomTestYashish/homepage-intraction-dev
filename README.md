@@ -29,6 +29,10 @@ filled icon, and once the page is scrolled it keeps only the titles, as V2 does.
 pages under the tabs: the All page (Claim Rewards, recommendations, add-ons, services, products) and the
 Prepaid page (connection status, quick actions, rewards, benefits, data usage and the current pack).
 
+A second dropdown, "New inventories", holds prototypes of new homepage inventory: **V1 – Top Strip**
+(`?v=n1`) puts a strip for events and new launches above the app, and the app's sheet slides up over it
+as the page scrolls (`src/components/TopStripPage.js`, `src/styles/inventories.css`).
+
 ## Layout
 
 - `index.html` – entry page

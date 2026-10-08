@@ -36,7 +36,7 @@ function ClaimRewards() {
   return section;
 }
 
-function Recommended() {
+export function Recommended() {
   const section = el(`
     <section class="all5 section section--bleed reco5">
       ${SectionTitle({ title: "Recommended for you", modifier: "section-title--inset reco5__title" })}
@@ -74,7 +74,7 @@ function AddOns() {
   `);
 }
 
-function Services() {
+export function Services() {
   return el(`
     <section class="all5 section services5">
       ${SectionTitle({ title: "My services", modifier: "title5" })}

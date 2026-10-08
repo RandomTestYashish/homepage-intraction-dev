@@ -95,10 +95,17 @@
 }
 
 /* ---------- Version switch (desktop preview only) ---------- */
-.variant-menu {
+.variant-menus {
   position: absolute;
   top: 20px;
   left: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.variant-menu {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -128,6 +135,11 @@
 
 .variant-menu__toggle:focus-visible {
   outline-color: #fff;
+}
+
+.variant-menu__short,
+.variant-menu__current[hidden] {
+  display: none; /* the short name is for the phone pill only */
 }
 
 .variant-menu__current {
@@ -258,12 +270,17 @@
 /* On phones the dropdown floats over the design: a slim pill at the right edge, clear of
    the header, the category row and the bottom navigation. Closed, it shows only the
    current version; open, the list drops down from it and the pill grows to hold it. */
-.is-mobile .variant-menu {
+.is-mobile .variant-menus {
   position: fixed;
   z-index: 60;
   top: 38%;
   right: 6px;
   left: auto;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.is-mobile .variant-menu {
   align-items: stretch;
   gap: 2px;
   padding: 3px;
@@ -295,6 +312,15 @@
 .is-mobile .variant-menu__chevron,
 .is-mobile .variant-menu__toggle[aria-expanded="true"] {
   display: none; /* open, the list itself marks the current version */
+}
+
+/* A group that is not showing a version carries its short name instead */
+.is-mobile .variant-menu:not(.is-current) .variant-menu__short {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.86);
 }
 
 .is-mobile .variant-menu__current {

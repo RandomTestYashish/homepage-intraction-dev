@@ -1,0 +1,301 @@
+/*
+ * New inventories V1: the Top Strip for events and new launches. The strip lies behind
+ * a white sheet that holds the header and the page; --strip-h is how much of it shows
+ * above the sheet at the top of the page. Positions mirror the Figma frame.
+ */
+
+[data-variant="n1"] {
+  --strip-h: 106px;
+  --page-top: calc(var(--status-bar-h) + var(--strip-h) + 77px); /* the tab's top, 77px below the sheet's */
+}
+
+.top-strip,
+.strip-sheet {
+  display: none;
+  position: absolute;
+  left: 0;
+  width: var(--screen-w);
+}
+
+[data-variant="n1"] .top-strip,
+[data-variant="n1"] .strip-sheet {
+  display: block;
+}
+
+/* ---------- The strip ---------- */
+.top-strip {
+  top: 0;
+  height: calc(var(--status-bar-h) + var(--strip-h) + 30px); /* runs on under the sheet's rounded corners */
+  overflow: hidden;
+  background: linear-gradient(169.15deg, #d40000, #d93f02);
+  color: #fff;
+}
+
+.top-strip__texture {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: calc(var(--status-bar-h) + var(--strip-h) + 17px);
+  object-fit: cover;
+}
+
+/* Everything in the strip is placed from just under the status bar */
+.top-strip__body {
+  position: absolute;
+  top: var(--status-bar-h);
+  left: 0;
+  width: 100%;
+  height: var(--strip-h);
+}
+
+.top-strip__logo {
+  position: absolute;
+  top: 13.42px;
+  left: 16.02px;
+  width: 80px;
+  height: 39px;
+}
+
+.top-strip__logo img {
+  position: absolute;
+}
+
+.top-strip__logo-art {
+  top: 0.67px;
+  left: 0;
+}
+
+.top-strip__logo-mark {
+  top: 0.59px;
+  left: 5.88px;
+}
+
+.top-strip__ribbon {
+  position: absolute;
+  top: 23.08px;
+  left: 44.27px;
+  width: 35.73px;
+  height: 9.3px;
+  rotate: -0.2deg;
+}
+
+.top-strip__ribbon span {
+  position: absolute;
+  top: 2.8px;
+  left: 4.8px;
+  font-size: 3.174px;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.top-strip__note {
+  position: absolute;
+  top: 61.42px;
+  left: 16.02px;
+  font-size: var(--fs-12);
+  font-weight: 500;
+  line-height: var(--lh-16);
+}
+
+.top-strip__person {
+  position: absolute;
+  top: 0;
+  left: 122.65px;
+  width: 109.7px;
+  height: 125.29px;
+}
+
+.top-strip__person img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.top-strip__title {
+  position: absolute;
+  top: 16.64px;
+  left: 221.33px;
+  font-size: 18px;
+  font-style: italic;
+  font-weight: 900;
+  line-height: 22px;
+  white-space: nowrap;
+}
+
+.top-strip__cta {
+  position: absolute;
+  top: 52.42px;
+  left: 259.35px;
+  width: 100.98px;
+  height: 35.75px;
+  border-radius: 10.72px;
+  background: #000;
+  font-size: 12.51px;
+  font-weight: 500;
+  line-height: 14.3px;
+  color: #fff;
+}
+
+/* ---------- The sheet over it ---------- */
+/* App.js moves the sheet, the header and the tabs up together as the page scrolls. */
+.strip-sheet {
+  top: var(--status-bar-h);
+  bottom: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--color-surface);
+  box-shadow: 0 -11px 7px rgba(0, 0, 0, 0.25);
+  will-change: transform;
+}
+
+[data-variant="n1"] .page {
+  background: none; /* the sheet is the page's surface, so the strip shows above it */
+}
+
+[data-variant="n1"] .app-header {
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+/* Over the strip the status bar is clear with white glyphs; it turns back once covered */
+[data-variant="n1"] .status-bar {
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+[data-variant="n1"] .status-bar img {
+  transition: filter var(--dur-fast) var(--ease-out);
+}
+
+[data-variant="n1"][data-strip="open"] .status-bar {
+  background-color: transparent;
+}
+
+[data-variant="n1"][data-strip="open"] .status-bar img {
+  filter: brightness(0) invert(1);
+}
+
+/* ---------- Category tabs: a peach tab around the selected one ---------- */
+.category-tabs__peach {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: visible;
+  opacity: calc(1 - 1.6 * var(--compact)); /* leaves as the tiles shrink */
+  pointer-events: none;
+  will-change: transform;
+}
+
+[data-variant="n1"] .category-tabs__peach {
+  display: block;
+}
+
+/* The peach tab starts 8px above the tiles, so the row is that much taller at the top;
+   pinned, the tiles keep the usual 14px above them. */
+[data-variant="n1"] .category-tabs {
+  --compact-pad: 6px;
+  height: 118px;
+  padding-top: 8px;
+}
+
+[data-variant="n1"] .category-tabs__indicator {
+  opacity: var(--compact); /* the line only belongs to the pinned state */
+}
+
+/* ---------- Page ---------- */
+.inv1,
+.page[data-view="strip"] > section:not(.inv1) {
+  display: none;
+}
+
+.page[data-view="strip"] > .inv1 {
+  display: block;
+  animation: pp-in var(--dur-large) var(--ease-out) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page[data-view="strip"] > .inv1 {
+    animation: none;
+  }
+}
+
+/* Welcome: the tab's peach runs straight into this wash */
+.page[data-view="strip"] > .welcome1 {
+  position: relative;
+  height: 340px;
+  margin: 0;
+  overflow: hidden;
+}
+
+.welcome1__wash {
+  position: absolute;
+  top: 0;
+  left: -141.29px;
+  width: 657.58px;
+  max-width: none;
+  height: 340px;
+  object-fit: cover;
+  transform: scaleY(-1);
+}
+
+.welcome1::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 24px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #fff);
+}
+
+.welcome1__shadow {
+  position: absolute;
+  top: 77.11px;
+  left: 142.32px;
+}
+
+.welcome1__sim {
+  position: absolute;
+  top: 18.92px;
+  left: calc(50% - 2px - 59.04px);
+  width: 118.08px;
+  height: 118.08px;
+}
+
+.welcome1__title {
+  position: absolute;
+  top: 137px;
+  left: 0;
+  width: 100%;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 32px;
+  text-align: center;
+  color: #000;
+}
+
+.welcome1__body {
+  position: absolute;
+  top: 224.3px;
+  left: 0;
+  width: 100%;
+  font-size: var(--fs-14);
+  line-height: var(--lh-18);
+  text-align: center;
+  color: #444e5a;
+}
+
+.welcome1 .btn {
+  position: absolute;
+  z-index: 1;
+  top: 269px;
+  left: var(--gutter);
+  width: 343px;
+  height: 48px;
+  border-radius: 12px;
+}
+
+.page[data-view="strip"] > .reco5 {
+  margin-top: 24px;
+}
+
+.page[data-view="strip"] > .services5 {
+  margin-top: 32px;
+}
