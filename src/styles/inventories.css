@@ -309,35 +309,66 @@
   --page-top: calc(var(--status-bar-h) + 126px); /* 49px lower than usual, for the tape */
 }
 
-/* Lives in the header, so it leaves and returns with it */
+/* A white rectangle of its own: App.js keeps it under the header and then stuck at the
+   top, where the page scrolls beneath it. */
 .ticker {
   display: none;
   position: absolute;
-  top: 74.8px;
+  z-index: 15; /* over the page and its tabs, under the header */
+  top: 0;
   left: 0;
-  width: 100%;
-  height: 33.4px;
-  overflow: hidden;
-  isolation: isolate;
+  width: var(--screen-w);
+  height: 34px;
   background: var(--color-surface);
-  /* The text fades out towards both edges of the screen */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 76px), transparent);
-  mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 76px), transparent);
+  will-change: transform;
 }
 
 [data-variant="n2"] .ticker {
   display: block;
 }
 
+/* The tabs pin under the tape instead of under the status bar */
+[data-variant="n2"] .category-tabs {
+  top: calc(var(--status-bar-h) - var(--page-top) + 33px);
+}
+
+.ticker__view {
+  position: absolute;
+  inset: 0 36px 0 0; /* stops short of the chevron */
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--color-surface);
+  /* The text fades out towards both ends */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 48px), transparent);
+  mask-image: linear-gradient(to right, transparent, #000 80px, #000 calc(100% - 48px), transparent);
+}
+
 /* Red to gold across the screen, not along the text: the colour stays put while the
    words move through it. The text is black on white and this layer is screened over it. */
-.ticker::after {
+.ticker__view::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: 2px -36px 2px 0; /* clear of the edges, where a half-covered pixel would show the colour */
   background: linear-gradient(to right, #d40000 19.7%, #f4b60b 115.7%);
   mix-blend-mode: screen;
   pointer-events: none;
+}
+
+/* Outline/Right Chevron, at the end of the tape */
+.ticker__more {
+  position: absolute;
+  top: 0;
+  right: 8px;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 100%;
+}
+
+.ticker__more::after {
+  content: "";
+  position: absolute;
+  inset: -6px -8px -6px -10px; /* a 44px tap target */
 }
 
 .ticker__track {

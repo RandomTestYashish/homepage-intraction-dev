@@ -18,7 +18,7 @@ import { PhoneFrame } from "./components/PhoneFrame.js";
 import { PrepaidPage } from "./components/PrepaidPage.js";
 import { ProductShowcase } from "./components/ProductShowcase.js";
 import { StatusBar } from "./components/StatusBar.js";
-import { TopStrip, TopStripPage } from "./components/TopStripPage.js";
+import { TickerTape, TopStrip, TopStripPage } from "./components/TopStripPage.js";
 import { VariantSwitch } from "./components/VariantSwitch.js";
 
 const BUY_PRODUCTS = [
@@ -49,6 +49,9 @@ const TABS_INSET_V5 = 24; // …and where it starts in V5, whose tabs are spaced
 const STRIP_VARIANT = "n1"; // New inventories V1: the Top Strip
 const STRIP_HEIGHT = 106; // how much of the strip shows above the sheet at the top of the page
 const STRIP_HEADER_RANGE = 40; // the header may only start leaving over the strip's last 40px
+const TICKER_VARIANT = "n2"; // New inventories V2: the Ticket tape
+const TICKER_TOP = 75; // where the tape sits below the status bar while the header is showing
+const TICKER_HEIGHT = 33; // the tape is 1px taller than this, so no seam shows where the tabs pin under it
 const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes down off the strip
 
 export function App() {
@@ -96,7 +99,7 @@ export function App() {
   // The header's menu button opens the side drawer over the home screen; while it
   // is open, everything behind it is taken out of the tab order.
   const menu = HamburgerMenu({
-    onOpenChange: (open) => [page, header, bottomNav].forEach((layer) => (layer.inert = open)),
+    onOpenChange: (open) => [page, header, ticker, bottomNav].forEach((layer) => (layer.inert = open)),
   });
   const header = Header({ onMenu: menu.open });
   const bottomNav = BottomNavigation({
@@ -107,7 +110,8 @@ export function App() {
   // The strip and the sheet over it lie behind the page; only the Top Strip version shows them.
   const strip = TopStrip();
   const sheet = el(`<div class="strip-sheet"></div>`);
-  screen.append(strip, sheet, page, StatusBar(), header, bottomNav, menu.element);
+  const ticker = TickerTape(); // only the Ticket tape version shows it
+  screen.append(strip, sheet, page, ticker, StatusBar(), header, bottomNav, menu.element);
 
   // Scroll-linked: the hero card recedes very slightly as the page moves under the header.
   const heroCard = hero.querySelector(".nba__card");
@@ -181,8 +185,19 @@ export function App() {
     header.style.transform = `translate3d(0, ${visible - HEADER_HEIGHT + stripLeft}px, 0)`; // translateY(-100%) when hidden
     header.style.opacity = 0.6 + 0.4 * shown;
 
-    const pinned = Math.max(pageTop - scrollY, statusBar); // where position: sticky puts the tabs
-    const clearance = Math.max(0, statusBar + stripLeft + visible - pinned);
+    // Ticket tape: it rides up with the page, never above the status bar and never under
+    // the header, then stays stuck at the top with the tabs pinned beneath it.
+    const tickerHeight = screen.dataset.variant === TICKER_VARIANT ? TICKER_HEIGHT : 0;
+    let floor = statusBar + stripLeft + visible; // the tabs are held below this line
+    if (tickerHeight) {
+      const underHeader = statusBar + visible + (TICKER_TOP - HEADER_HEIGHT) * shown;
+      const tickerY = Math.max(statusBar, statusBar + TICKER_TOP - scrollY, underHeader);
+      ticker.style.transform = `translate3d(0, ${tickerY}px, 0)`;
+      floor = Math.max(floor, tickerY + tickerHeight);
+    }
+
+    const pinned = Math.max(pageTop - scrollY, statusBar + tickerHeight); // where position: sticky puts the tabs
+    const clearance = Math.max(0, floor - pinned);
     tabs.style.transform = clearance ? `translate3d(0, ${clearance}px, 0)` : "";
   }
 
@@ -269,7 +284,7 @@ export function App() {
   // bottom nav that shrinks in place instead of hiding; V5 has the new top nav, whose
   // selected tab is a folder-tab shape, and on scroll keeps only the titles, as V2 does.
   // New inventories V1 (inventories.css) puts a strip for events above the whole app;
-  // V2 runs a ticker tape under the header instead.
+  // V2 runs a ticker tape under the header instead, which then sticks at the top.
   stage.append(VariantSwitch({ onChange: setVariant }));
 
   // Refresh replays the current version from its start: back at the top and, for the

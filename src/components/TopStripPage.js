@@ -29,6 +29,26 @@ export function TopStrip() {
   `);
 }
 
+/**
+ * New inventories V2: a line of text that runs right to left under the header, in a
+ * loop, with a chevron at its end. The track holds the message four times and slides by
+ * half its width, so the second half lands exactly where the first began. App.js keeps
+ * it under the header and, once that has gone, stuck at the top above the tabs.
+ */
+export function TickerTape() {
+  const item = `<span class="ticker__item"><b>Zakir Khan Live</b> • Airtel postpaid the advantage club • </span>`;
+  return el(`
+    <div class="ticker">
+      <div class="ticker__view" role="marquee" aria-label="Zakir Khan Live. Airtel postpaid, the advantage club.">
+        <div class="ticker__track" aria-hidden="true">${item.repeat(4)}</div>
+      </div>
+      <button class="ticker__more pressable" type="button" aria-label="Know more">
+        <img src="${asset("all5-chevron-20.svg")}" alt="" />
+      </button>
+    </div>
+  `);
+}
+
 function Welcome() {
   return el(`
     <section class="inv1 welcome1" aria-label="New postpaid">
