@@ -49,7 +49,7 @@ const TABS_INSET_V5 = 24; // …and where it starts in V5, whose tabs are spaced
 const STRIP_VARIANT = "n1"; // New inventories V1: the Top Strip
 const STRIP_HEIGHT = 106; // how much of the strip shows above the sheet at the top of the page
 const STRIP_HEADER_RANGE = 40; // the header may only start leaving over the strip's last 40px
-const STRIP_DELAY = 3000; // ms the homepage sits at the top before it comes down off the strip
+const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes down off the strip
 
 export function App() {
   const { stage, screen } = PhoneFrame();
