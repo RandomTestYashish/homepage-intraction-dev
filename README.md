@@ -30,8 +30,11 @@ pages under the tabs: the All page (Claim Rewards, recommendations, add-ons, ser
 Prepaid page (connection status, quick actions, rewards, benefits, data usage and the current pack).
 
 A second dropdown, "New inventories", holds prototypes of new homepage inventory: **V1 – Top Strip**
-(`?v=n1`) puts a strip for events and new launches above the app, and the app's sheet slides up over it
-as the page scrolls (`src/components/TopStripPage.js`, `src/styles/inventories.css`).
+(`?v=n1`) puts a strip for events and new launches above the app. The homepage starts at the top,
+covering it, comes down off it after three seconds, and slides back up over it as the page scrolls (`src/components/TopStripPage.js`, `src/styles/inventories.css`).
+
+The Refresh button at the top right of the desktop preview (a round pill above the dropdowns on a
+phone) replays the current version from its start.
 
 ## Layout
 

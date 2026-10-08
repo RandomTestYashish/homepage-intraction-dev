@@ -227,6 +227,33 @@
   outline-color: #fff;
 }
 
+/* ---------- Refresh (replays the current version) ---------- */
+.refresh-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.04);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  color: rgba(255, 255, 255, 0.86);
+  transition: background-color var(--dur-fast) var(--ease-out);
+}
+
+.refresh-button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.refresh-button:focus-visible {
+  outline-color: #fff;
+}
+
 /* ---------- Mobile web: no mockup, the screen is the whole viewport ---------- */
 .is-mobile {
   --status-bar-h: 0px; /* the real device draws its own status bar */
@@ -362,4 +389,26 @@
 
 .is-mobile .variant-switch__button[aria-pressed="true"] {
   background: #fff;
+}
+
+/* On phones the refresh button is one more pill, just above the dropdowns */
+.is-mobile .refresh-button {
+  position: fixed;
+  z-index: 60;
+  top: calc(38% - 46px);
+  right: 6px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  border-radius: 20px;
+  background: rgba(24, 25, 28, 0.62);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.22);
+}
+
+.is-mobile .refresh-button span {
+  display: none;
 }

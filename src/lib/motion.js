@@ -20,6 +20,8 @@ const TRANSITIONS = {
   indicator: { duration: 0.4, ease: [0.22, 1, 0.36, 1] }, // active-tab line sliding to the new tab
   tabBounce: spring(0.45, 0.32), // V5: the tab shape overshoots the new tab and settles back
   iconPop: spring(0.4, 0.55), // V5: the newly selected icon lands with a small bounce
+  stripDrop: spring(0.7, 0.12), // Top Strip: the homepage coming down off the strip
+  refreshSpin: { duration: 0.5, ease: [0.22, 1, 0.36, 1] },
   chevron: { duration: 0.42, ease: [0.4, 0, 0.2, 1] }, // menu chevron morph: no spring, so no overshoot
   bar: spring(0.28), // bottom nav following the scroll direction
   settle: spring(0.38, 0.16), // bottom nav returning once scrolling rests

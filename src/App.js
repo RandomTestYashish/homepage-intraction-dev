@@ -49,6 +49,7 @@ const TABS_INSET_V5 = 24; // …and where it starts in V5, whose tabs are spaced
 const STRIP_VARIANT = "n1"; // New inventories V1: the Top Strip
 const STRIP_HEIGHT = 106; // how much of the strip shows above the sheet at the top of the page
 const STRIP_HEADER_RANGE = 40; // the header may only start leaving over the strip's last 40px
+const STRIP_DELAY = 3000; // ms the homepage sits at the top before it comes down off the strip
 
 export function App() {
   const { stage, screen } = PhoneFrame();
@@ -132,13 +133,47 @@ export function App() {
     pageTop = parseFloat(getComputedStyle(page).paddingTop);
     layoutChrome();
   }
+
+  // Top Strip: the homepage starts at the top, covering the strip, and after a moment
+  // comes down to show it. `stripShown` is how much of the strip is uncovered; it feeds
+  // --strip-h, which is part of where the page starts (inventories.css).
   const hasStrip = () => screen.dataset.variant === STRIP_VARIANT;
+  let stripShown = 0;
+  let stripTimer = 0;
+  let stripAnimation = null;
+  function setStripShown(value) {
+    pageTop += value - stripShown;
+    stripShown = value;
+    screen.style.setProperty("--strip-h", `${value}px`);
+    layoutChrome();
+  }
+  function startStrip() {
+    clearTimeout(stripTimer);
+    stripAnimation?.stop();
+    screen.style.removeProperty("--strip-h");
+    stripShown = 0;
+    if (!hasStrip()) return;
+    screen.style.setProperty("--strip-h", "0px");
+    stripTimer = setTimeout(() => {
+      // Already scrolled: the strip is covered anyway, so make room for it without moving the page.
+      if (page.scrollTop > 0) {
+        setStripShown(STRIP_HEIGHT);
+        page.scrollTop += STRIP_HEIGHT;
+        return;
+      }
+      stripAnimation = animate(0, STRIP_HEIGHT, { ...transition("stripDrop"), onUpdate: setStripShown });
+    }, STRIP_DELAY);
+  }
+
   function layoutChrome() {
     // Top Strip: the sheet, with the header on it, rides up over the strip as the page
     // scrolls, and the header stays put until the strip is nearly covered.
-    const stripLeft = hasStrip() ? Math.max(0, STRIP_HEIGHT - scrollY) : 0;
+    const stripLeft = hasStrip() ? Math.max(0, stripShown - scrollY) : 0;
     const shown = Math.max(headerShown, Math.min(1, stripLeft / STRIP_HEADER_RANGE));
     sheet.style.transform = `translate3d(0, ${stripLeft}px, 0)`;
+    // Its corners square off as it reaches the top, so no strip shows beside them.
+    const radius = `${Math.min(16, stripLeft)}px`;
+    if (screen.style.getPropertyValue("--sheet-radius") !== radius) screen.style.setProperty("--sheet-radius", radius);
     const stripState = stripLeft > statusBar / 2 ? "open" : "closed";
     if (screen.dataset.strip !== stripState) screen.dataset.strip = stripState;
 
@@ -179,6 +214,7 @@ export function App() {
     screen.dataset.variant = variant;
     // V5 spaces the category tabs differently and starts the page a little higher.
     tabs.relayout(variant === "5" ? TABS_INSET_V5 : TABS_INSET);
+    startStrip();
     if (screen.isConnected) measureChrome();
     showView();
     // Carry the nav's current state over to however this version shows it.
@@ -214,7 +250,7 @@ export function App() {
     onProgress(y) {
       screen.dataset.scrolled = String(y > 4);
       linkHero(y);
-      linkTabs(hasStrip() ? y - STRIP_HEIGHT : y); // the tabs stay full size while the strip is leaving
+      linkTabs(y - (hasStrip() ? stripShown : 0)); // the tabs stay full size while the strip is leaving
     },
     onScroll(y) {
       scrollY = y;
@@ -234,6 +270,23 @@ export function App() {
   // selected tab is a folder-tab shape, and on scroll keeps only the titles, as V2 does.
   // New inventories V1 (inventories.css) puts a strip for events above the whole app.
   stage.append(VariantSwitch({ onChange: setVariant }));
+
+  // Refresh replays the current version from its start: back at the top and, for the
+  // Top Strip, waiting again before it comes down.
+  const refresh = el(`
+    <button class="refresh-button" type="button" aria-label="Refresh preview">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <path d="M13.5 8a5.5 5.5 0 1 1-1.61-3.89M13.5 2.5v2.75h-2.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <span>Refresh</span>
+    </button>
+  `);
+  refresh.addEventListener("click", () => {
+    page.scrollTop = 0;
+    setVariant(screen.dataset.variant);
+    animate(refresh.querySelector("svg"), { rotate: [0, 360] }, transition("refreshSpin"));
+  });
+  stage.append(refresh);
 
   revealOnScroll(page);
   enablePressFeedback(screen);

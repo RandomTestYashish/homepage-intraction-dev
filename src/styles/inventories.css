@@ -5,7 +5,8 @@
  */
 
 [data-variant="n1"] {
-  --strip-h: 106px;
+  --strip-full: 106px; /* the strip's own height below the status bar */
+  --strip-h: 106px; /* how much of it is uncovered; App.js brings this from 0 to full */
   --page-top: calc(var(--status-bar-h) + var(--strip-h) + 77px); /* the tab's top, 77px below the sheet's */
 }
 
@@ -25,7 +26,7 @@
 /* ---------- The strip ---------- */
 .top-strip {
   top: 0;
-  height: calc(var(--status-bar-h) + var(--strip-h) + 30px); /* runs on under the sheet's rounded corners */
+  height: calc(var(--status-bar-h) + var(--strip-full) + 30px); /* runs on under the sheet's rounded corners */
   overflow: hidden;
   background: linear-gradient(169.15deg, #d40000, #d93f02);
   color: #fff;
@@ -36,7 +37,7 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: calc(var(--status-bar-h) + var(--strip-h) + 17px);
+  height: calc(var(--status-bar-h) + var(--strip-full) + 17px);
   object-fit: cover;
 }
 
@@ -46,7 +47,7 @@
   top: var(--status-bar-h);
   left: 0;
   width: 100%;
-  height: var(--strip-h);
+  height: var(--strip-full);
 }
 
 .top-strip__logo {
@@ -142,7 +143,7 @@
 .strip-sheet {
   top: var(--status-bar-h);
   bottom: 0;
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-radius: var(--sheet-radius, var(--radius-lg)) var(--sheet-radius, var(--radius-lg)) 0 0;
   background: var(--color-surface);
   box-shadow: 0 -11px 7px rgba(0, 0, 0, 0.25);
   will-change: transform;
@@ -153,7 +154,7 @@
 }
 
 [data-variant="n1"] .app-header {
-  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-radius: var(--sheet-radius, var(--radius-lg)) var(--sheet-radius, var(--radius-lg)) 0 0;
 }
 
 /* Over the strip the status bar is clear with white glyphs; it turns back once covered */
