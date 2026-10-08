@@ -29,10 +29,10 @@ const boxLine = (id, peak, colour) => `
     <stop offset="0.4324" stop-color="${colour}" stop-opacity="0.6" />
     <stop offset="1" stop-color="${colour}" stop-opacity="0" />
   </linearGradient>`;
-const boxShape = (tone) => `
+const boxShape = (tone, line = tone) => `
   <g data-tone="${tone}">
     <path d="${BOX_FILL}" fill="url(#tab5-fill-${tone})" />
-    <path d="${BOX_LINE}" stroke="url(#tab5-line-${tone})" />
+    <path d="${BOX_LINE}" stroke="url(#tab5-line-${line})" />
   </g>`;
 // New inventories V1 puts a peach tab around the selected tile instead. Same idea as the
 // V5 shape: the Figma path with the tab's left edge at x = 0, 8px wider than the tile on
@@ -58,11 +58,15 @@ export function CategoryTabs() {
           <linearGradient id="tab5-fill-blue" x1="0" y1="0" x2="0" y2="112.7" gradientUnits="userSpaceOnUse">
             <stop stop-color="#fff" /><stop offset="0.6" stop-color="#fff" /><stop offset="0.8" stop-color="#F7FBFC" /><stop offset="1" stop-color="#F1F8FB" />
           </linearGradient>
+          <linearGradient id="tab5-fill-peach" x1="0" y1="0" x2="0" y2="111" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#fff" /><stop offset="1" stop-color="#FEEACF" />
+          </linearGradient>
           ${boxLine("tab5-line-red", "#FB5C74", "#FA233B")}
           ${boxLine("tab5-line-blue", "#9CBFF6", "#9CBFF6")}
         </defs>
         ${boxShape("red")}
         ${boxShape("blue")}
+        ${boxShape("peach", "red")}
       </svg>
       <svg class="category-tabs__peach" aria-hidden="true" width="80" height="146" viewBox="0 0 80 146" fill="none">
         <path d="${PEACH_SHAPE}" fill="#FFE7CD" />
@@ -143,7 +147,7 @@ export function CategoryTabs() {
     rail.centreOn(tab);
 
     // V5 bounces: the shape springs past the new tab and back, and the icon pops in.
-    const bouncy = root.closest("[data-variant]")?.dataset.variant === "5";
+    const bouncy = Boolean(root.closest('[data-topnav="folder"]'));
     const icon = bouncy && tab.querySelector(".category-tab__icon--filled, .category-tab__icon");
     if (icon && !reducedMotion.matches) animate(icon, { scale: [0.7, 1] }, transition("iconPop"));
 

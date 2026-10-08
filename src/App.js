@@ -227,8 +227,11 @@ export function App() {
   let navAway = false;
   function setVariant(variant) {
     screen.dataset.variant = variant;
-    // V5 spaces the category tabs differently and starts the page a little higher.
-    tabs.relayout(variant === "5" ? TABS_INSET_V5 : TABS_INSET);
+    // V5's top nav (the folder-tab shape) is also the Ticket tape's. It spaces the
+    // category tabs differently and starts the page a little higher.
+    const folderNav = variant === "5" || variant === TICKER_VARIANT;
+    screen.dataset.topnav = folderNav ? "folder" : "tiles";
+    tabs.relayout(folderNav ? TABS_INSET_V5 : TABS_INSET);
     startStrip();
     if (screen.isConnected) measureChrome();
     showView();
