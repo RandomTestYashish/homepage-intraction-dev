@@ -34,6 +34,17 @@ const boxShape = (tone, line = tone) => `
     <path d="${BOX_FILL}" fill="url(#tab5-fill-${tone})" />
     <path d="${BOX_LINE}" stroke="url(#tab5-line-${line})" />
   </g>`;
+// New inventories V3: a "smart icon", an offer that sits in the row ahead of the first
+// tab. It is only shown in that version (inventories.css), so elsewhere the row is as before.
+const SMART_ICON = `
+  <button class="smart-icon" type="button" data-press="0.95" aria-label="Refer and save ₹300">
+    <span class="smart-icon__body" data-press-target>
+      <img class="smart-icon__glow" src="${asset("inv3-glow.svg")}" alt="" />
+      <span class="smart-icon__art"><img src="${asset("inv3-wifi.png")}" alt="" /></span>
+      <span class="smart-icon__text">Refer &amp; Save</span>
+      <span class="smart-icon__offer">₹300</span>
+    </span>
+  </button>`;
 const toneOf = (tab) => (tab.dataset.tab === "0" ? "red" : "blue");
 
 const selectedLayers = [...Array(4).fill("tab-selected-bg.svg"), "tab-selected-bg2.svg"]
@@ -62,6 +73,7 @@ export function CategoryTabs() {
         ${boxShape("peach", "red")}
       </svg>
       <div class="rail__track">
+        ${SMART_ICON}
         ${TABS.map(
           (tab, index) => `
           <button class="category-tab" type="button" role="tab" data-press="0.95" data-tab="${index}"

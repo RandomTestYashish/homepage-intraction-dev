@@ -5,12 +5,15 @@
  * V1 (n1), Top Strip: a strip for events and new launches lies behind a white sheet that
  * holds the header and the page; --strip-h is how much of it shows above the sheet.
  * V2 (n2), Ticket tape: a line of text runs right to left under the header.
+ * V3 (n3), Smart Icon: an offer sits in the tab row, ahead of the first tab.
+ *
+ * In all three the tab shape starts 16px below whatever is above it.
  */
 
 [data-variant="n1"] {
   --strip-full: 106px; /* the strip's own height below the status bar */
   --strip-h: 106px; /* how much of it is uncovered; App.js brings this from 0 to full */
-  --page-top: calc(var(--status-bar-h) + var(--strip-h) + 75px); /* the tab shape's top, 75px below the sheet's */
+  --page-top: calc(var(--status-bar-h) + var(--strip-h) + var(--header-h) + 16px);
 }
 
 .top-strip,
@@ -288,7 +291,7 @@
 
 /* ---------- V2: Ticket tape ---------- */
 [data-variant="n2"] {
-  --page-top: calc(var(--status-bar-h) + 117px); /* the tab shape starts 8px under the tape */
+  --page-top: calc(var(--status-bar-h) + 125px); /* 16px under the tape, which ends 109px down */
 }
 
 /* A white rectangle of its own: App.js keeps it under the header and then stuck at the
@@ -380,4 +383,85 @@
   .ticker__track {
     animation: none;
   }
+}
+
+/* ---------- V3: Smart Icon ---------- */
+[data-variant="n3"] {
+  --page-top: calc(var(--status-bar-h) + var(--header-h) + 16px);
+}
+
+/* First in the tab row. Placed as in the Figma frame: 3.8px below the tiles' top. */
+.smart-icon {
+  display: none;
+  position: relative;
+  flex: none;
+  width: 56px;
+  height: 111px;
+}
+
+[data-variant="n3"] .smart-icon {
+  display: block;
+}
+
+/* Shrinks with the row once the page is scrolled, when the tabs keep only their titles */
+.smart-icon__body {
+  position: absolute;
+  top: 13.8px;
+  left: 0;
+  width: 56px;
+  height: 63px;
+  transform: translateY(calc(var(--compact) * -9px)) scale(calc(1 - 0.42 * var(--compact)));
+  transform-origin: 50% 0;
+}
+
+.smart-icon__glow {
+  position: absolute;
+  top: -5.79px;
+  left: -10.02px;
+  max-width: none;
+}
+
+.smart-icon__art {
+  position: absolute;
+  top: 1.77px;
+  left: 6.6px;
+  width: 38.02px;
+  height: 33px;
+  rotate: -5.56deg;
+}
+
+.smart-icon__art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.smart-icon__text,
+.smart-icon__offer {
+  position: absolute;
+  left: 0;
+  width: 56px;
+  rotate: -3.37deg;
+  -webkit-background-clip: text;
+  background-clip: text;
+  line-height: 12.087px;
+  text-align: center;
+  white-space: nowrap;
+  color: transparent;
+}
+
+.smart-icon__text {
+  top: 31.9px;
+  background-image: linear-gradient(187.01deg, rgb(54, 54, 54) 16.7%, rgb(173, 0, 0) 453.16%);
+  font-size: 8.624px;
+  font-weight: 500;
+}
+
+.smart-icon__offer {
+  top: 48.3px;
+  padding-block: 4px; /* room for the tall glyphs inside the clipped background */
+  margin-top: -4px;
+  background-image: linear-gradient(185.37deg, rgb(54, 54, 54) -275.6%, rgb(173, 0, 0) 154.11%);
+  font-size: 19.62px;
+  font-weight: 900;
 }

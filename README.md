@@ -37,6 +37,8 @@ covering it, comes down off it after one second, and slides back up over it as t
 under the header, in a loop, with a chevron at its end. On scroll the tape stays stuck at the top, with the
 category tabs pinned under it.
 
+**V3 – Smart Icon** (`?v=n3`) puts an offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
+
 The Refresh button at the top right of the desktop preview (a round pill above the dropdowns on a
 phone) replays the current version from its start.
 

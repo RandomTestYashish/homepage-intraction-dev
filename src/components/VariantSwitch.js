@@ -19,6 +19,7 @@ const GROUPS = [
     variants: [
       { id: "n1", name: "V1", text: "Top Strip" },
       { id: "n2", name: "V2", text: "Ticket tape" },
+      { id: "n3", name: "V3", text: "Smart Icon" },
     ],
   },
 ];
