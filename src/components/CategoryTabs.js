@@ -53,7 +53,7 @@ const selectedLayers = [...Array(4).fill("tab-selected-bg.svg"), "tab-selected-b
 
 export function CategoryTabs() {
   const root = el(`
-    <div class="rail category-tabs" role="tablist" aria-label="Service type" data-tone="red">
+    <div class="rail category-tabs" role="tablist" aria-label="Service type" data-tone="red" data-selected="0">
       <svg class="category-tabs__box" aria-hidden="true" width="84" height="112" viewBox="0 0 84 112" fill="none">
         <defs>
           <linearGradient id="tab5-fill-red" x1="0" y1="0" x2="0" y2="111" gradientUnits="userSpaceOnUse">
@@ -140,6 +140,7 @@ export function CategoryTabs() {
     if (!tab || tab === selected) return;
     selected = tab;
     root.dataset.tone = toneOf(tab);
+    root.dataset.selected = tab.dataset.tab;
     root.dispatchEvent(new CustomEvent("tabchange", { bubbles: true, detail: { index: Number(tab.dataset.tab) } }));
     root.querySelectorAll(".category-tab").forEach((copy) => {
       copy.setAttribute("aria-selected", String(copy.dataset.tab === tab.dataset.tab));

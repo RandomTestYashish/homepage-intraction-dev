@@ -80,13 +80,14 @@ export function App() {
 
   // V1–V4 show the home sections whatever tab is selected. V5 has its own pages
   // under the tabs: the Prepaid page for Prepaid, and its All page for the rest.
-  // The New inventories versions share one page of their own.
+  // The New inventories versions share one page of their own, and the same Prepaid page.
   const PREPAID_TAB = 1;
   let selectedTab = 0;
   function showView() {
     const variant = screen.dataset.variant;
-    const v5View = selectedTab === PREPAID_TAB ? "prepaid" : "all";
-    const view = variant.startsWith("n") ? "strip" : variant === "5" ? v5View : "home"; // n… = New inventories
+    const ownPage = variant.startsWith("n") ? "strip" : "all"; // n… = New inventories
+    const pages = variant === "5" || variant.startsWith("n"); // versions with a page per tab
+    const view = !pages ? "home" : selectedTab === PREPAID_TAB ? "prepaid" : ownPage;
     if (page.dataset.view === view) return;
     page.dataset.view = view;
     page.scrollTop = 0; // a different page starts from its top

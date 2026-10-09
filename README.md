@@ -39,6 +39,8 @@ category tabs pinned under it.
 
 **V3 – Smart Icon** (`?v=n3`) puts an offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
 
+In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.
+
 The Refresh button at the top right of the desktop preview (a round pill above the dropdowns on a
 phone) replays the current version from its start.
 

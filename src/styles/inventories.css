@@ -181,12 +181,14 @@
 }
 
 /* ---------- Category tabs ---------- */
-/* Both versions use V5's folder-tab shape (sections.css), in peach with the red outline */
+/* These versions use V5's folder-tab shape (sections.css), in peach with the red outline.
+   Prepaid, the one tab with a page of its own, keeps V5's blue. */
 [data-variant^="n"] .category-tabs .category-tabs__box g[data-tone] {
   opacity: 0;
 }
 
-[data-variant^="n"] .category-tabs .category-tabs__box g[data-tone="peach"] {
+[data-variant^="n"] .category-tabs:not([data-selected="1"]) .category-tabs__box g[data-tone="peach"],
+[data-variant^="n"] .category-tabs[data-selected="1"] .category-tabs__box g[data-tone="blue"] {
   opacity: 1;
 }
 
