@@ -25,7 +25,10 @@ const GROUPS = [
   {
     title: "Top Nav",
     short: "Nav",
-    variants: [{ id: "t1", name: "V1", text: "Unlimited tag shimmer" }],
+    variants: [
+      { id: "t1", name: "V1", text: "Unlimited tag shimmer" },
+      { id: "t2", name: "V2", text: "Stroke and banner" },
+    ],
   },
 ];
 const VARIANTS = GROUPS.flatMap((group) => group.variants);

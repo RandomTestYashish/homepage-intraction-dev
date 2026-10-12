@@ -12,6 +12,7 @@ import { Header } from "./components/Header.js";
 import { IconActionGrid } from "./components/IconActionGrid.js";
 import { IllustrativeGrid } from "./components/IllustrativeGrid.js";
 import { MyServices } from "./components/MyServices.js";
+import { NavNudge } from "./components/NavNudge.js";
 import { NextBestAction } from "./components/NextBestAction.js";
 import { AllPageV5 } from "./components/AllPageV5.js";
 import { PhoneFrame } from "./components/PhoneFrame.js";
@@ -53,6 +54,10 @@ const TICKER_VARIANT = "n2"; // New inventories V2: the Ticket tape
 const TICKER_TOP = 75; // where the tape sits below the status bar while the header is showing
 const TICKER_HEIGHT = 33; // the tape is 1px taller than this, so no seam shows where the tabs pin under it
 const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes down off the strip
+const NUDGE_VARIANT = "t2"; // Top Nav V2: the stroke around the Postpaid tile, then the banner
+const NUDGE_DELAY = 3000; // ms before the stroke starts…
+const NUDGE_STROKE = 1000; // …and how long it takes to go round the tile
+const NUDGE_TAB = 2; // Postpaid
 
 export function App() {
   const { stage, screen } = PhoneFrame();
@@ -60,8 +65,10 @@ export function App() {
   const page = el(`<div class="page scroll-y" tabindex="-1"></div>`);
   const hero = NextBestAction();
   const tabs = CategoryTabs();
+  const nudge = NavNudge(); // only Top Nav V2 shows it
   page.append(
     tabs,
+    nudge,
     hero,
     MyServices(),
     IllustrativeGrid({ title: "Buy Airtel products", link: "View all", items: BUY_PRODUCTS }),
@@ -170,6 +177,36 @@ export function App() {
     }, STRIP_DELAY);
   }
 
+  // Top Nav V2: after a wait the stroke draws round the Postpaid tile, and when it has
+  // closed the banner opens under the tabs. Scrolling removes the banner for good (until
+  // the version is started again); the stroke stays on the tile.
+  let nudgeTimer = 0;
+  let nudgeDismissed = false;
+  function startNudge() {
+    clearTimeout(nudgeTimer);
+    delete screen.dataset.stroke;
+    nudge.hide();
+    nudgeDismissed = false;
+    if (screen.dataset.variant !== NUDGE_VARIANT) return;
+    nudgeTimer = setTimeout(() => {
+      screen.dataset.stroke = "drawn";
+      nudgeTimer = setTimeout(() => {
+        if (nudgeDismissed) return;
+        // Point at the middle of the tile, wherever the row has been dragged to. The
+        // mockup may be scaled, so the distance is taken as a share of the page's width.
+        const tile = tabs.querySelector(`[data-tab="${NUDGE_TAB}"] .category-tab__tile`).getBoundingClientRect();
+        const frame = page.getBoundingClientRect();
+        const centre = ((tile.left + tile.width / 2 - frame.left) / frame.width) * page.offsetWidth;
+        nudge.show(centre - nudge.querySelector(".nav-nudge__card").offsetLeft);
+      }, reducedMotion.matches ? 0 : NUDGE_STROKE);
+    }, NUDGE_DELAY);
+  }
+  function dismissNudge() {
+    if (nudgeDismissed) return;
+    nudgeDismissed = true;
+    nudge.hide();
+  }
+
   function layoutChrome() {
     // Top Strip: the sheet, with the header on it, rides up over the strip as the page
     // scrolls, and the header stays put until the strip is nearly covered.
@@ -234,6 +271,7 @@ export function App() {
     screen.dataset.topnav = folderNav ? "folder" : "tiles";
     tabs.relayout(folderNav ? TABS_INSET_V5 : TABS_INSET);
     startStrip();
+    startNudge();
     if (screen.isConnected) measureChrome();
     showView();
     // Carry the nav's current state over to however this version shows it.
@@ -268,6 +306,7 @@ export function App() {
     navUntilRest: () => shrinksNav(),
     onProgress(y) {
       screen.dataset.scrolled = String(y > 4);
+      if (y > 4 && screen.dataset.variant === NUDGE_VARIANT) dismissNudge();
       linkHero(y);
       linkTabs(y - (hasStrip() ? stripShown : 0)); // the tabs stay full size while the strip is leaving
     },
@@ -289,10 +328,12 @@ export function App() {
   // selected tab is a folder-tab shape, and on scroll keeps only the titles, as V2 does.
   // New inventories V1 (inventories.css) puts a strip for events above the whole app;
   // V2 runs a ticker tape under the header instead, which then sticks at the top.
+  // Top Nav V1 and V2 are V1 with a change on the Postpaid tab (sections.css): a tag that
+  // shimmers, or a stroke that draws round the tile and then opens a banner under the tabs.
   stage.append(VariantSwitch({ onChange: setVariant }));
 
   // Refresh replays the current version from its start: back at the top and, for the
-  // Top Strip, waiting again before it comes down.
+  // Top Strip, waiting again before it comes down; Top Nav V2 starts its wait again too.
   const refresh = el(`
     <button class="refresh-button" type="button" aria-label="Refresh preview">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">

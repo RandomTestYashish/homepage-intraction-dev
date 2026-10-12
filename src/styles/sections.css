@@ -319,6 +319,133 @@
   }
 }
 
+/*
+ * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
+ * a red stroke draws itself around the Postpaid tile and, once it has gone all the way
+ * round, a banner opens under the tabs, pointing up at that tab. Scrolling removes the
+ * banner; the stroke stays.
+ */
+.category-tab__stroke {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.category-tab__stroke rect {
+  stroke: #fc5252;
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1.01; /* not drawn yet, and clear of the dash on either side */
+}
+
+[data-variant="t2"] .category-tab__stroke {
+  display: block;
+}
+
+[data-variant="t2"] .category-tab__ribbon,
+[data-variant="t2"] .category-tab__ribbon-text {
+  display: none;
+}
+
+/* The transition belongs to the drawn state only, so starting over clears it at once */
+[data-stroke="drawn"] .category-tab__stroke rect {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+.nav-nudge {
+  display: none;
+  position: relative;
+  height: 0;
+  overflow: hidden;
+  background: var(--color-surface-subtle); /* runs into the section below */
+  transition: height 0.36s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-variant="t2"] .nav-nudge {
+  display: block;
+}
+
+.nav-nudge.is-shown {
+  height: 114px; /* 8px under the tabs, then the 106px card */
+  transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.nav-nudge__card {
+  position: absolute;
+  top: 8px;
+  left: var(--gutter);
+  width: 343px;
+  height: 106px;
+  opacity: 0;
+  scale: 0.86;
+  transition:
+    opacity 0.2s var(--ease-out),
+    scale 0.3s var(--ease-out);
+}
+
+/* It pops: out of its pointer, a little past full size, and back */
+.nav-nudge.is-shown .nav-nudge__card {
+  opacity: 1;
+  scale: 1;
+  transition:
+    opacity 0.24s var(--ease-out) 0.08s,
+    scale 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s;
+}
+
+.nav-nudge__shape,
+.nav-nudge__title,
+.nav-nudge__text,
+.nav-nudge__photo {
+  position: absolute;
+}
+
+.nav-nudge__shape {
+  inset: 0;
+}
+
+.nav-nudge__title,
+.nav-nudge__text {
+  left: 18px;
+  white-space: nowrap;
+}
+
+.nav-nudge__title {
+  top: 34px;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.3px;
+  color: #fff;
+}
+
+.nav-nudge__text {
+  top: 62.5px;
+  font-size: 16px;
+  line-height: 19px;
+  letter-spacing: -0.08px;
+  color: #f6f6f6;
+}
+
+.nav-nudge__photo {
+  top: 18px;
+  left: 195px;
+  width: 145px;
+  height: 88px;
+  border-bottom-right-radius: 20px; /* kept inside the card's corner */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-stroke="drawn"] .category-tab__stroke rect,
+  .nav-nudge,
+  .nav-nudge.is-shown,
+  .nav-nudge__card,
+  .nav-nudge.is-shown .nav-nudge__card {
+    transition: none;
+  }
+}
+
 .category-tab__label {
   translate: 0 var(--compact-shift);
   display: grid;

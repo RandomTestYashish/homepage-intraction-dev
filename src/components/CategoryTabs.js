@@ -96,7 +96,14 @@ export function CategoryTabs() {
                   ? `<span class="category-tab__icon category-tab__icon--filled"><img src="${asset(tab.filled)}" alt="" /></span>`
                   : ""
               }
-            </span>${tab.ribbon ? `<span class="category-tab__tag">${tab.ribbon}</span>` : ""}</span>
+            </span>${
+              tab.ribbon
+                ? `<span class="category-tab__tag">${tab.ribbon}</span>
+                   <svg class="category-tab__stroke" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                     <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" pathLength="1" />
+                   </svg>`
+                : ""
+            }</span>
             <span class="category-tab__label"><span>${tab.label}</span><span aria-hidden="true">${tab.label}</span></span>
           </button>`,
         ).join("")}
