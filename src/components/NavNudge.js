@@ -10,8 +10,8 @@ const outline = (x) =>
   `C0 28.9151 0.000232122 21.3728 4.68652 16.6865C9.37281 12.0002 16.9151 12 32 12H${x - POINTER}L${x} 0Z`;
 
 /**
- * Top Nav V2: a banner under the category tabs that points up at one of them. It starts
- * folded away; App.js shows it once the stroke around that tab's tile is complete, and
+ * Top Nav V2: a banner under the category tabs, lying over the top of the page, that points
+ * up at one of them. It starts hidden; App.js shows it once the stroke around that tab's tile is complete, and
  * removes it when the page is scrolled.
  */
 export function NavNudge() {

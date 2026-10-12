@@ -322,8 +322,8 @@
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
  * a red stroke draws itself around the Postpaid tile and, once it has gone all the way
- * round, a banner opens under the tabs, pointing up at that tab. Scrolling removes the
- * banner; the stroke stays.
+ * round, a banner opens under the tabs, over the top of the page, pointing up at that tab.
+ * Scrolling removes the banner; the stroke stays.
  */
 .category-tab__stroke {
   display: none;
@@ -354,32 +354,27 @@
   transition: stroke-dashoffset 1s cubic-bezier(0.45, 0, 0.25, 1);
 }
 
+/* Takes no room of its own: the card lies over the top of the section below */
 .nav-nudge {
   display: none;
   position: relative;
+  z-index: 5; /* over the page, under the tabs */
   height: 0;
-  overflow: hidden;
-  background: var(--color-surface-subtle); /* runs into the section below */
-  transition: height 0.36s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-variant="t2"] .nav-nudge {
   display: block;
 }
 
-.nav-nudge.is-shown {
-  height: 114px; /* 8px under the tabs, then the 106px card */
-  transition: height 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
 .nav-nudge__card {
   position: absolute;
-  top: 8px;
+  top: 0; /* the pointer's tip meets the tabs, as in the frame */
   left: var(--gutter);
   width: 343px;
   height: 106px;
   opacity: 0;
   scale: 0.86;
+  pointer-events: none;
   transition:
     opacity 0.2s var(--ease-out),
     scale 0.3s var(--ease-out);
@@ -389,9 +384,10 @@
 .nav-nudge.is-shown .nav-nudge__card {
   opacity: 1;
   scale: 1;
+  pointer-events: auto;
   transition:
-    opacity 0.24s var(--ease-out) 0.08s,
-    scale 0.52s cubic-bezier(0.34, 1.56, 0.64, 1) 0.08s;
+    opacity 0.24s var(--ease-out),
+    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .nav-nudge__shape,
@@ -438,8 +434,6 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-stroke="drawn"] .category-tab__stroke rect,
-  .nav-nudge,
-  .nav-nudge.is-shown,
   .nav-nudge__card,
   .nav-nudge.is-shown .nav-nudge__card {
     transition: none;

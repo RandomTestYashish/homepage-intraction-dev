@@ -43,7 +43,7 @@ A third dropdown, "Top Nav", holds versions of the top nav on the V1 homepage: *
 shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info Tag across the bottom edge of
 the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
 **V2 – Stroke and banner** (`?v=t2`) waits three seconds, draws a red stroke round the Postpaid tile over one
-second, then opens a banner under the tabs that points up at Postpaid. Scrolling removes the banner and the
+second, then opens a banner under the tabs, over the top card, that points up at Postpaid. Scrolling removes the banner and the
 stroke stays; Refresh plays it again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).
 
 In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.
