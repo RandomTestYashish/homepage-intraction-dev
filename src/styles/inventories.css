@@ -7,7 +7,8 @@
  * V2 (n2), Ticket tape: a line of text runs right to left under the header.
  * V3 (n3), Smart Icon: an offer sits in the tab row, ahead of the first tab.
  *
- * In all three the tab shape starts 16px below whatever is above it.
+ * In V1 and V2 the tab shape starts 16px below whatever is above it; in V3 it follows the
+ * header directly, as in its frame.
  */
 
 [data-variant="n1"] {
@@ -389,7 +390,7 @@
 
 /* ---------- V3: Smart Icon ---------- */
 [data-variant="n3"] {
-  --page-top: calc(var(--status-bar-h) + var(--header-h) + 16px);
+  --page-top: calc(var(--status-bar-h) + var(--header-h) + 1px); /* the shape's top is at 117px in the frame */
 }
 
 /* First in the tab row. Placed as in the Figma frame: 3.8px below the tiles' top. */
