@@ -42,7 +42,7 @@ category tabs pinned under it.
 A third dropdown, "Top Nav", holds versions of the top nav on the V1 homepage: **V1 – Unlimited tag
 shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info Tag across the bottom edge of
 the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
-**V2 – Stroke and banner** (`?v=t2`) waits a second, runs a red stroke twice round the Postpaid tile in 0.8
+**V2 – Stroke and banner** (`?v=t2`) starts as the page lands: a red stroke runs four times round the Postpaid tile in 1.2
 seconds, then opens a banner under the tabs, over the top card, that points up at Postpaid and has a band of
 light crossing it. Scrolling removes the banner and the
 stroke stays; Refresh plays it again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).

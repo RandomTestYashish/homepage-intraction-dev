@@ -55,8 +55,8 @@ const TICKER_TOP = 75; // where the tape sits below the status bar while the hea
 const TICKER_HEIGHT = 33; // the tape is 1px taller than this, so no seam shows where the tabs pin under it
 const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes down off the strip
 const NUDGE_VARIANT = "t2"; // Top Nav V2: the stroke around the Postpaid tile, then the banner
-const NUDGE_DELAY = 1000; // ms before the stroke starts…
-const NUDGE_STROKE = 800; // …and how long its two laps of the tile take (tab-stroke in sections.css)
+const NUDGE_DELAY = 200; // ms before the stroke starts: as the page lands, once it has painted…
+const NUDGE_STROKE = 1200; // …and how long its four laps of the tile take (tab-stroke in sections.css)
 const NUDGE_TAB = 2; // Postpaid
 
 export function App() {
@@ -177,7 +177,7 @@ export function App() {
     }, STRIP_DELAY);
   }
 
-  // Top Nav V2: after a wait the stroke runs twice round the Postpaid tile, and when it
+  // Top Nav V2: as the page lands the stroke runs four times round the Postpaid tile, and when it
   // has closed the banner opens under the tabs. Scrolling removes the banner for good (until
   // the version is started again); the stroke stays on the tile.
   let nudgeTimer = 0;

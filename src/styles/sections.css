@@ -321,7 +321,7 @@
 
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
- * a red stroke runs twice round the Postpaid tile and, once it has closed, a banner
+ * a red stroke runs four times round the Postpaid tile and, once it has closed, a banner
  * opens under the tabs, over the top of the page, pointing up at that tab.
  * Scrolling removes the banner; the stroke stays.
  */
@@ -353,23 +353,24 @@
 [data-stroke="drawn"] .category-tab__stroke rect {
   opacity: 1;
   stroke-dasharray: 1 0;
-  animation: tab-stroke 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+  animation: tab-stroke 1.2s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
 
-/* Twice round the tile: a short length of stroke runs one lap from the top-left corner,
-   then its head carries on round again while its tail stays put, closing the outline. */
+/* Four times round the tile: a short length of stroke runs three laps from the top-left
+   corner, then its head carries on round once more while its tail stays put, closing the
+   outline. */
 @keyframes tab-stroke {
   0% {
     stroke-dasharray: 0 1;
     stroke-dashoffset: 0;
   }
-  55% {
+  80% {
     stroke-dasharray: 0.3 0.7;
-    stroke-dashoffset: -1;
+    stroke-dashoffset: -3;
   }
   100% {
     stroke-dasharray: 1 0;
-    stroke-dashoffset: -1;
+    stroke-dashoffset: -3;
   }
 }
 
