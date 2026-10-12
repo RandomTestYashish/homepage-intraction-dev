@@ -22,13 +22,18 @@ const GROUPS = [
       { id: "n3", name: "V3", text: "Smart Icon" },
     ],
   },
+  {
+    title: "Top Nav",
+    short: "Nav",
+    variants: [{ id: "t1", name: "V1", text: "Unlimited pill shimmer" }],
+  },
 ];
 const VARIANTS = GROUPS.flatMap((group) => group.variants);
 
 /**
  * Preview control for switching between versions of the prototype: one dropdown per
- * group ("Homepage interaction", "New inventories"), each listing its versions. The
- * choice lives in the URL (`?v=2`, `?v=n1`), so a link opens on the same version. On
+ * group ("Homepage interaction", "New inventories", "Top Nav"), each listing its versions.
+ * The choice lives in the URL (`?v=2`, `?v=n1`), so a link opens on the same version. On
  * desktop the dropdowns sit beside the phone; on phones CSS turns each into a small
  * pill at the right edge that shows the current version, or the group's short name,
  * and opens its list under it.

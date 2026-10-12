@@ -264,6 +264,60 @@
   color: var(--color-blue-700);
 }
 
+/*
+ * Top Nav V1 (t1): Homepage interaction V1 with a shimmer on the Postpaid tab's
+ * "Unlimited" pill. A soft band of light crosses the pill, then rests before the next
+ * pass; it is cut to the pill's own shape and crosses the word as well, where the light
+ * shows best: the pill itself is nearly white.
+ */
+.category-tab__ribbon-shine {
+  display: none;
+  position: absolute;
+  left: 0.26px;
+  top: 46.17px;
+  z-index: 1; /* over the word */
+  width: 63.49px;
+  height: 17.84px;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask: url("../assets/tab-postpaid-ribbon.svg") center / 100% 100% no-repeat;
+  mask: url("../assets/tab-postpaid-ribbon.svg") center / 100% 100% no-repeat;
+}
+
+[data-variant="t1"] .category-tab__ribbon-shine {
+  display: block;
+}
+
+.category-tab__ribbon-shine::before {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 36px;
+  background: linear-gradient(
+    100deg,
+    transparent,
+    rgba(150, 205, 255, 0.3) 32%,
+    rgba(255, 255, 255, 0.9) 50%,
+    rgba(150, 205, 255, 0.3) 68%,
+    transparent
+  );
+  transform: translateX(-40px);
+  animation: ribbon-shine 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes ribbon-shine {
+  55%,
+  100% {
+    transform: translateX(68px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-tab__ribbon-shine::before {
+    animation: none;
+  }
+}
+
 .category-tab__label {
   translate: 0 var(--compact-shift);
   display: grid;

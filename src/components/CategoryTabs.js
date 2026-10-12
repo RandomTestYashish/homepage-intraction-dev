@@ -84,6 +84,7 @@ export function CategoryTabs() {
               ${
                 tab.ribbon
                   ? `<img class="category-tab__ribbon" src="${asset("tab-postpaid-ribbon.svg")}" alt="" />
+                     <span class="category-tab__ribbon-shine"></span>
                      <span class="category-tab__ribbon-text">${tab.ribbon}</span>
                      <span class="category-tab__ribbon-text category-tab__ribbon-text--v5">${tab.ribbonV5}</span>`
                   : ""
