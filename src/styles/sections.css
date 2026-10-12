@@ -265,55 +265,56 @@
 }
 
 /*
- * Top Nav V1 (t1): Homepage interaction V1 with a shimmer on the Postpaid tab's
- * "Unlimited" pill. A soft band of light crosses the pill, then rests before the next
- * pass; it is cut to the pill's own shape and crosses the word as well, where the light
- * shows best: the pill itself is nearly white.
+ * Top Nav V1 (t1): Homepage interaction V1 with the Postpaid tab's "Unlimited" as a dark
+ * Info Tag across the tile's bottom edge, in place of the pale ribbon inside it. A band
+ * of light crosses the tag, then rests before the next pass.
  */
-.category-tab__ribbon-shine {
+.category-tab__tag {
   display: none;
   position: absolute;
-  left: 0.26px;
-  top: 46.17px;
-  z-index: 1; /* over the word */
-  width: 63.49px;
-  height: 17.84px;
+  top: 52px; /* 8px of it hangs below the 64px tile */
+  left: 50%;
+  translate: -50% 0;
+  height: 20px;
+  padding: 4px 8px;
   overflow: hidden;
-  pointer-events: none;
-  -webkit-mask: url("../assets/tab-postpaid-ribbon.svg") center / 100% 100% no-repeat;
-  mask: url("../assets/tab-postpaid-ribbon.svg") center / 100% 100% no-repeat;
+  border-radius: 28px;
+  background: linear-gradient(to top, #000, #2d2b2b);
+  font-size: var(--fs-10);
+  font-weight: 700;
+  line-height: var(--lh-12);
+  white-space: nowrap;
+  color: #fff0b8;
 }
 
-[data-variant="t1"] .category-tab__ribbon-shine {
+[data-variant="t1"] .category-tab__tag {
   display: block;
 }
 
-.category-tab__ribbon-shine::before {
+[data-variant="t1"] .category-tab__ribbon,
+[data-variant="t1"] .category-tab__ribbon-text {
+  display: none;
+}
+
+.category-tab__tag::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
-  width: 36px;
-  background: linear-gradient(
-    100deg,
-    transparent,
-    rgba(150, 205, 255, 0.3) 32%,
-    rgba(255, 255, 255, 0.9) 50%,
-    rgba(150, 205, 255, 0.3) 68%,
-    transparent
-  );
-  transform: translateX(-40px);
-  animation: ribbon-shine 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  width: 30px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.55) 50%, transparent);
+  transform: translateX(-36px) skewX(-16deg); /* a slanted band, soft at both edges */
+  animation: tag-shine 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@keyframes ribbon-shine {
+@keyframes tag-shine {
   55%,
   100% {
-    transform: translateX(68px);
+    transform: translateX(70px) skewX(-16deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .category-tab__ribbon-shine::before {
+  .category-tab__tag::after {
     animation: none;
   }
 }

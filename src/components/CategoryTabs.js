@@ -84,7 +84,6 @@ export function CategoryTabs() {
               ${
                 tab.ribbon
                   ? `<img class="category-tab__ribbon" src="${asset("tab-postpaid-ribbon.svg")}" alt="" />
-                     <span class="category-tab__ribbon-shine"></span>
                      <span class="category-tab__ribbon-text">${tab.ribbon}</span>
                      <span class="category-tab__ribbon-text category-tab__ribbon-text--v5">${tab.ribbonV5}</span>`
                   : ""
@@ -97,7 +96,7 @@ export function CategoryTabs() {
                   ? `<span class="category-tab__icon category-tab__icon--filled"><img src="${asset(tab.filled)}" alt="" /></span>`
                   : ""
               }
-            </span></span>
+            </span>${tab.ribbon ? `<span class="category-tab__tag">${tab.ribbon}</span>` : ""}</span>
             <span class="category-tab__label"><span>${tab.label}</span><span aria-hidden="true">${tab.label}</span></span>
           </button>`,
         ).join("")}

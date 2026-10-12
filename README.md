@@ -39,9 +39,9 @@ category tabs pinned under it.
 
 **V3 – Smart Icon** (`?v=n3`) puts an offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
 
-A third dropdown, "Top Nav", holds versions of the top nav on the V1 homepage: **V1 – Unlimited pill
-shimmer** (`?v=t1`) is Homepage interaction V1 with a band of light that crosses the "Unlimited" pill on the
-Postpaid tab and rests before the next pass (`src/styles/sections.css`).
+A third dropdown, "Top Nav", holds versions of the top nav on the V1 homepage: **V1 – Unlimited tag
+shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info Tag across the bottom edge of
+the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
 
 In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.
 
