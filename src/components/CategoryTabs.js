@@ -1,4 +1,5 @@
 import { asset, el } from "../lib/dom.js";
+import { loadLottie } from "../lib/lottie.js";
 import { animate, reducedMotion, transition } from "../lib/motion.js";
 import { createRail } from "../lib/rail.js";
 
@@ -163,22 +164,31 @@ export function CategoryTabs() {
     });
   });
 
-  // The animation is fetched the first time the smart icon is on screen, and only runs
-  // while it is: in the other versions the icon is hidden and nothing is loaded.
+  // The player and the animation are fetched the first time the smart icon is on screen,
+  // and it only runs while it is: in the other versions the icon is hidden and nothing loads.
   const art = root.querySelector(".smart-icon__art");
   let offer = null;
-  new IntersectionObserver(([entry]) => {
-    if (!entry.isIntersecting) return offer?.pause();
-    offer ??= window.lottie.loadAnimation({
-      container: art,
-      renderer: "svg",
-      loop: true,
-      autoplay: false,
-      path: asset("inv3-refer-save.json"),
-    });
+  let onScreen = false;
+  const runOffer = () => {
+    if (!offer) return;
+    if (!onScreen) offer.pause();
     // Reduced motion: hold on the offer rather than loop.
-    if (reducedMotion.matches) offer.goToAndStop(REDUCED_FRAME, true);
+    else if (reducedMotion.matches) offer.goToAndStop(REDUCED_FRAME, true);
     else offer.play();
+  };
+  new IntersectionObserver(async ([entry]) => {
+    onScreen = entry.isIntersecting;
+    if (onScreen && !offer) {
+      const lottie = await loadLottie();
+      offer ??= lottie.loadAnimation({
+        container: art,
+        renderer: "svg",
+        loop: true,
+        autoplay: false,
+        path: asset("inv3-refer-save.json"),
+      });
+    }
+    runOffer();
   }).observe(art);
 
   /** A version with different tab spacing calls this once its styles apply. */

@@ -34,9 +34,7 @@
         var styles = ["tokens", "base", "phone", "chrome", "sections", "all-v5", "prepaid", "inventories", "menu"].map(function (name) {
           return "src/styles/" + name + ".css";
         });
-        var vendor = ["motion", "lottie"].map(function (name) {
-          return "src/vendor/" + name + ".js";
-        });
+        var motion = "src/vendor/motion.js";
         var entry = new URL("src/main.js", location.href).href;
 
         var checked = new Set();
@@ -56,7 +54,7 @@
           await Promise.all(imports.map(checkModule));
         }
         try {
-          await Promise.all(styles.concat(vendor).map(check).concat(checkModule(entry)));
+          await Promise.all(styles.map(check).concat(check(motion), checkModule(entry)));
         } catch (error) {
           // Offline or blocked: carry on with whatever the browser already has.
         }
@@ -73,12 +71,7 @@
             return add("link", { rel: "stylesheet", href: href }, document.head);
           }),
         );
-        // classic scripts: must run before the modules
-        await Promise.all(
-          vendor.map(function (src) {
-            return add("script", { src: src }, document.body);
-          }),
-        );
+        await add("script", { src: motion }, document.body); // classic script: must run before the modules
         add("script", { type: "module", src: entry }, document.body);
       })();
     </script>
