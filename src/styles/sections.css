@@ -373,21 +373,21 @@
   width: 343px;
   height: 106px;
   opacity: 0;
-  scale: 0.86;
+  scale: 0.94;
   pointer-events: none;
   transition:
-    opacity 0.2s var(--ease-out),
-    scale 0.3s var(--ease-out);
+    opacity 0.1s ease-out,
+    scale 0.1s ease-out;
 }
 
-/* It pops: out of its pointer, a little past full size, and back */
+/* Quick and even: it is there in a tenth of a second, growing a little out of its pointer */
 .nav-nudge.is-shown .nav-nudge__card {
   opacity: 1;
   scale: 1;
   pointer-events: auto;
   transition:
-    opacity 0.24s var(--ease-out),
-    scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    opacity 0.1s ease-out,
+    scale 0.14s var(--ease-out);
 }
 
 .nav-nudge__shape,
