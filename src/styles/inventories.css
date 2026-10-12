@@ -393,7 +393,7 @@
   --page-top: calc(var(--status-bar-h) + var(--header-h) + 1px); /* the shape's top is at 117px in the frame */
 }
 
-/* First in the tab row. Placed as in the Figma frame: 3.8px below the tiles' top. */
+/* First in the tab row, with the animation centred on the row's height. */
 .smart-icon {
   display: none;
   position: relative;
@@ -409,18 +409,20 @@
 /* Shrinks with the row once the page is scrolled, when the tabs keep only their titles */
 .smart-icon__body {
   position: absolute;
-  top: 13.8px;
+  top: 24.5px; /* the 68px animation, 3px higher, is then centred in the 111px row */
   left: 0;
   width: 56px;
   height: 63px;
-  transform: translateY(calc(var(--compact) * -9px)) scale(calc(1 - 0.42 * var(--compact)));
+  /* and stays centred in the 47px that is left of the row */
+  transform: translateY(calc(var(--compact) * -19px)) scale(calc(1 - 0.42 * var(--compact)));
   transform-origin: 50% 0;
 }
 
+/* Centred behind the animation */
 .smart-icon__glow {
   position: absolute;
-  top: -5.79px;
-  left: -10.02px;
+  top: 2.39px;
+  left: -6.88px;
   max-width: none;
 }
 
