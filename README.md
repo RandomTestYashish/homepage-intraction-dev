@@ -56,3 +56,4 @@ phone) replays the current version from its start.
 - `src/assets/` – images and icons exported from Figma
 - `reference/full.png` – Figma render of the screen, for comparison
 - `src/vendor/motion.js` – Motion 14.0.0 browser bundle (MIT)
+- `src/vendor/lottie.js` – lottie-web 5.12.2 light player (MIT), plays the Smart Icon animation

@@ -36,15 +36,15 @@ const boxShape = (tone, line = tone) => `
   </g>`;
 // New inventories V3: a "smart icon", an offer that sits in the row ahead of the first
 // tab. It is only shown in that version (inventories.css), so elsewhere the row is as before.
+// Its art is a Lottie animation that alternates between the Wi-Fi mark and the offer.
 const SMART_ICON = `
   <button class="smart-icon" type="button" data-press="0.95" aria-label="Refer and save ₹300">
     <span class="smart-icon__body" data-press-target>
       <img class="smart-icon__glow" src="${asset("inv3-glow.svg")}" alt="" />
-      <span class="smart-icon__art"><img src="${asset("inv3-wifi.png")}" alt="" /></span>
-      <span class="smart-icon__text">Refer &amp; Save</span>
-      <span class="smart-icon__offer">₹300</span>
+      <span class="smart-icon__art"></span>
     </span>
   </button>`;
+const REDUCED_FRAME = 210; // "Refer & Save ₹300", fully in
 const toneOf = (tab) => (tab.dataset.tab === "0" ? "red" : "blue");
 
 const selectedLayers = [...Array(4).fill("tab-selected-bg.svg"), "tab-selected-bg2.svg"]
@@ -162,6 +162,24 @@ export function CategoryTabs() {
       },
     });
   });
+
+  // The animation is fetched the first time the smart icon is on screen, and only runs
+  // while it is: in the other versions the icon is hidden and nothing is loaded.
+  const art = root.querySelector(".smart-icon__art");
+  let offer = null;
+  new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return offer?.pause();
+    offer ??= window.lottie.loadAnimation({
+      container: art,
+      renderer: "svg",
+      loop: true,
+      autoplay: false,
+      path: asset("inv3-refer-save.json"),
+    });
+    // Reduced motion: hold on the offer rather than loop.
+    if (reducedMotion.matches) offer.goToAndStop(REDUCED_FRAME, true);
+    else offer.play();
+  }).observe(art);
 
   /** A version with different tab spacing calls this once its styles apply. */
   root.relayout = (pad) => {
