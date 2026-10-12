@@ -44,8 +44,7 @@ shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info T
 the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
 **V2 – Stroke and banner** (`?v=t2`) starts as the page lands: a red stroke runs four times round the Postpaid tile in 1.2
 seconds, then opens a banner under the tabs, over the top card, that points up at Postpaid and has a wide, soft band of
-light drifting slowly across it. Five seconds after the banner opens, the stroke and banner play again, in a
-loop. Scrolling removes the banner, ends the loop and the
+light drifting slowly across it. It plays once. Scrolling removes the banner and the
 stroke stays; Refresh plays it again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).
 
 In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.

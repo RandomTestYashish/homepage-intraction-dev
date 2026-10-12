@@ -57,7 +57,6 @@ const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes dow
 const NUDGE_VARIANT = "t2"; // Top Nav V2: the stroke around the Postpaid tile, then the banner
 const NUDGE_DELAY = 200; // ms before the stroke starts: as the page lands, once it has painted…
 const NUDGE_STROKE = 1200; // …and how long its four laps of the tile take (tab-stroke in sections.css)
-const NUDGE_LOOP = 5000; // ms the banner stays open before the stroke and banner play again
 const NUDGE_TAB = 2; // Postpaid
 
 export function App() {
@@ -179,19 +178,15 @@ export function App() {
   }
 
   // Top Nav V2: as the page lands the stroke runs four times round the Postpaid tile, and when it
-  // has closed the banner opens under the tabs. NUDGE_LOOP later the whole thing plays again.
-  // Scrolling removes the banner for good (until the version is started again) and ends the
-  // loop; the stroke stays on the tile.
+  // has closed the banner opens under the tabs. It plays once. Scrolling removes the banner
+  // for good (until the version is started again); the stroke stays on the tile.
   let nudgeTimer = 0;
   let nudgeDismissed = false;
   function startNudge() {
-    nudgeDismissed = false;
-    playNudge();
-  }
-  function playNudge() {
     clearTimeout(nudgeTimer);
     delete screen.dataset.stroke;
     nudge.hide();
+    nudgeDismissed = false;
     if (screen.dataset.variant !== NUDGE_VARIANT) return;
     nudgeTimer = setTimeout(() => {
       screen.dataset.stroke = "drawn";
@@ -203,14 +198,12 @@ export function App() {
         const frame = page.getBoundingClientRect();
         const centre = ((tile.left + tile.width / 2 - frame.left) / frame.width) * page.offsetWidth;
         nudge.show(centre - nudge.querySelector(".nav-nudge__card").offsetLeft);
-        if (!reducedMotion.matches) nudgeTimer = setTimeout(playNudge, NUDGE_LOOP);
       }, reducedMotion.matches ? 0 : NUDGE_STROKE);
     }, NUDGE_DELAY);
   }
   function dismissNudge() {
     if (nudgeDismissed) return;
     nudgeDismissed = true;
-    clearTimeout(nudgeTimer);
     nudge.hide();
   }
 
