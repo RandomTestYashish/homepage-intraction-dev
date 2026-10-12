@@ -322,7 +322,7 @@
 
 .ticker__view {
   position: absolute;
-  inset: 0 36px 0 0; /* stops short of the chevron */
+  inset: 0 36px 0 0; /* stops short of the arrow */
   overflow: hidden;
   isolation: isolate;
   background: var(--color-surface);
@@ -342,7 +342,7 @@
   pointer-events: none;
 }
 
-/* Outline/Right Chevron, at the end of the tape */
+/* Right Arrow, at the end of the tape */
 .ticker__more {
   position: absolute;
   top: 0;
