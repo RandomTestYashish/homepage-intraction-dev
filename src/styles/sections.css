@@ -321,8 +321,8 @@
 
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
- * a red stroke draws itself around the Postpaid tile and, once it has gone all the way
- * round, a banner opens under the tabs, over the top of the page, pointing up at that tab.
+ * a red stroke runs twice round the Postpaid tile and, once it has closed, a banner
+ * opens under the tabs, over the top of the page, pointing up at that tab.
  * Scrolling removes the banner; the stroke stays.
  */
 .category-tab__stroke {
@@ -335,8 +335,8 @@
 
 .category-tab__stroke rect {
   stroke: #fc5252;
-  stroke-dasharray: 1 2;
-  stroke-dashoffset: 1.01; /* not drawn yet, and clear of the dash on either side */
+  stroke-dasharray: 0 1;
+  opacity: 0; /* not drawn yet */
 }
 
 [data-variant="t2"] .category-tab__stroke {
@@ -348,10 +348,29 @@
   display: none;
 }
 
-/* The transition belongs to the drawn state only, so starting over clears it at once */
+/* The animation belongs to the drawn state only, so starting over clears it at once.
+   Its length is NUDGE_STROKE in App.js. */
 [data-stroke="drawn"] .category-tab__stroke rect {
-  stroke-dashoffset: 0;
-  transition: stroke-dashoffset 1s cubic-bezier(0.45, 0, 0.25, 1);
+  opacity: 1;
+  stroke-dasharray: 1 0;
+  animation: tab-stroke 0.8s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+}
+
+/* Twice round the tile: a short length of stroke runs one lap from the top-left corner,
+   then its head carries on round again while its tail stays put, closing the outline. */
+@keyframes tab-stroke {
+  0% {
+    stroke-dasharray: 0 1;
+    stroke-dashoffset: 0;
+  }
+  55% {
+    stroke-dasharray: 0.3 0.7;
+    stroke-dashoffset: -1;
+  }
+  100% {
+    stroke-dasharray: 1 0;
+    stroke-dashoffset: -1;
+  }
 }
 
 /* Takes no room of its own: the card lies over the top of the section below */
@@ -373,21 +392,21 @@
   width: 343px;
   height: 106px;
   opacity: 0;
-  scale: 0.94;
+  transform: translateY(-6px) scale(0.96);
   pointer-events: none;
   transition:
-    opacity 0.1s ease-out,
-    scale 0.1s ease-out;
+    opacity 0.14s ease-out,
+    transform 0.14s ease-out;
 }
 
-/* Quick and even: it is there in a tenth of a second, growing a little out of its pointer */
+/* Quick and even: it eases down out of its pointer, with no bounce */
 .nav-nudge.is-shown .nav-nudge__card {
   opacity: 1;
-  scale: 1;
+  transform: none;
   pointer-events: auto;
   transition:
-    opacity 0.1s ease-out,
-    scale 0.14s var(--ease-out);
+    opacity 0.18s ease-out,
+    transform 0.26s var(--ease-out);
 }
 
 .nav-nudge__shape,
@@ -399,6 +418,22 @@
 
 .nav-nudge__shape {
   inset: 0;
+}
+
+/* A band of light that crosses the card, cut to its outline, and rests between passes */
+.nav-nudge__shine {
+  transform: translateX(-140px) skewX(-18deg);
+}
+
+.nav-nudge.is-shown .nav-nudge__shine {
+  animation: nav-nudge-shine 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s infinite;
+}
+
+@keyframes nav-nudge-shine {
+  50%,
+  100% {
+    transform: translateX(400px) skewX(-18deg);
+  }
 }
 
 .nav-nudge__title,
@@ -434,6 +469,10 @@
 
 @media (prefers-reduced-motion: reduce) {
   [data-stroke="drawn"] .category-tab__stroke rect,
+  .nav-nudge.is-shown .nav-nudge__shine {
+    animation: none;
+  }
+
   .nav-nudge__card,
   .nav-nudge.is-shown .nav-nudge__card {
     transition: none;

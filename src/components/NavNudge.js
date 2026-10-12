@@ -23,8 +23,16 @@ export function NavNudge() {
             <linearGradient id="nav-nudge-fill" x1="14.6633" y1="106" x2="348.937" y2="48.0826" gradientUnits="userSpaceOnUse">
               <stop stop-color="#D90C00" /><stop offset="1" stop-color="#FD6400" />
             </linearGradient>
+            <linearGradient id="nav-nudge-light" x1="0" x2="1" y1="0" y2="0">
+              <stop stop-color="#fff" stop-opacity="0" /><stop offset="0.5" stop-color="#fff" stop-opacity="0.45" />
+              <stop offset="1" stop-color="#fff" stop-opacity="0" />
+            </linearGradient>
+            <clipPath id="nav-nudge-clip"><path /></clipPath>
           </defs>
-          <path fill="url(#nav-nudge-fill)" />
+          <path class="nav-nudge__fill" fill="url(#nav-nudge-fill)" />
+          <g clip-path="url(#nav-nudge-clip)">
+            <rect class="nav-nudge__shine" x="0" y="0" width="90" height="106" fill="url(#nav-nudge-light)" />
+          </g>
         </svg>
         <p class="nav-nudge__title">Faster than ever</p>
         <p class="nav-nudge__text">Upgrade at ₹499</p>
@@ -33,12 +41,12 @@ export function NavNudge() {
     </div>
   `);
   const card = root.querySelector(".nav-nudge__card");
-  const shape = root.querySelector("path");
+  const shapes = root.querySelectorAll("path"); // the fill, and the same outline clipping the shimmer
 
   /** Opens the banner with its pointer `x` px from the card's left edge. */
   root.show = (x) => {
     const at = Math.max(32 + POINTER, Math.min(x, WIDTH - 32 - POINTER)); // clear of the rounded corners
-    shape.setAttribute("d", outline(at));
+    shapes.forEach((shape) => shape.setAttribute("d", outline(at)));
     card.style.transformOrigin = `${at}px 0`; // it grows out of the pointer
     root.classList.add("is-shown");
     root.setAttribute("aria-hidden", "false");
