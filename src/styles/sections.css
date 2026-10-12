@@ -322,8 +322,8 @@
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
  * a red stroke runs four times round the Postpaid tile and, once it has closed, a banner
- * opens under the tabs, over the top of the page, pointing up at that tab.
- * Scrolling removes the banner; the stroke stays.
+ * opens under the tabs, over the top of the page, pointing up at that tab. Five seconds
+ * later both play again. Scrolling removes the banner and ends the loop; the stroke stays.
  */
 .category-tab__stroke {
   display: none;
@@ -421,17 +421,18 @@
   inset: 0;
 }
 
-/* A band of light that crosses the card, cut to its outline, and rests between passes */
+/* A wide, soft band of light that drifts across the card, cut to its outline, at an even
+   pace, and rests before the next pass */
 .nav-nudge__shine {
-  transform: translateX(-140px) skewX(-18deg);
+  transform: translateX(-230px) skewX(-18deg);
 }
 
 .nav-nudge.is-shown .nav-nudge__shine {
-  animation: nav-nudge-shine 2.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s infinite;
+  animation: nav-nudge-shine 4.4s cubic-bezier(0.45, 0, 0.55, 1) 0.4s infinite;
 }
 
 @keyframes nav-nudge-shine {
-  50%,
+  80%,
   100% {
     transform: translateX(400px) skewX(-18deg);
   }

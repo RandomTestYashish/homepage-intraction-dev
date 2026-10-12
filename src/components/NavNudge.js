@@ -24,14 +24,15 @@ export function NavNudge() {
               <stop stop-color="#D90C00" /><stop offset="1" stop-color="#FD6400" />
             </linearGradient>
             <linearGradient id="nav-nudge-light" x1="0" x2="1" y1="0" y2="0">
-              <stop stop-color="#fff" stop-opacity="0" /><stop offset="0.5" stop-color="#fff" stop-opacity="0.45" />
+              <stop stop-color="#fff" stop-opacity="0" /><stop offset="0.3" stop-color="#fff" stop-opacity="0.12" />
+              <stop offset="0.5" stop-color="#fff" stop-opacity="0.3" /><stop offset="0.7" stop-color="#fff" stop-opacity="0.12" />
               <stop offset="1" stop-color="#fff" stop-opacity="0" />
             </linearGradient>
             <clipPath id="nav-nudge-clip"><path /></clipPath>
           </defs>
           <path class="nav-nudge__fill" fill="url(#nav-nudge-fill)" />
           <g clip-path="url(#nav-nudge-clip)">
-            <rect class="nav-nudge__shine" x="0" y="0" width="90" height="106" fill="url(#nav-nudge-light)" />
+            <rect class="nav-nudge__shine" x="0" y="0" width="180" height="106" fill="url(#nav-nudge-light)" />
           </g>
         </svg>
         <p class="nav-nudge__title">Faster than ever</p>
