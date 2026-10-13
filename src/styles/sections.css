@@ -314,76 +314,53 @@
 }
 
 /*
- * Top Nav V4 (t4): V1's tag with its word flipping, like a split-flap board: "Unlimited"
- * tips back until it is edge-on, and "Data" tips forward into its place, then back, in a
- * loop. Each half of a flip speeds into and out of the edge-on moment, so the two read as
- * one turn. A faint light crosses each word once, mid-rest, never during a flip.
+ * Top Nav V4 (t4): V1's tag with its word changing: "Unlimited" slides up and out as
+ * "Data" slides in from below, then "Data" leaves the same way and "Unlimited" returns,
+ * in a loop. The tag clips them, so each is hidden once it is a line away. A faint light
+ * crosses each word once, mid-rest, never during a slide.
  */
 [data-variant="t4"] .category-tab__tag-words span {
-  animation: tag-flip-a 6s linear infinite;
-  backface-visibility: hidden;
+  opacity: 1;
+  animation: tag-slide-a 6s infinite;
 }
 
 [data-variant="t4"] .category-tab__tag-words span + span {
-  animation-name: tag-flip-b;
+  animation-name: tag-slide-b;
 }
 
-@keyframes tag-flip-a {
+@keyframes tag-slide-a {
   0%,
   42% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(0deg);
-    animation-timing-function: cubic-bezier(0.5, 0, 1, 1); /* tips away, gathering pace */
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
-  47% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(90deg);
-    animation-timing-function: step-end;
+  50% {
+    transform: translateY(-20px);
+    animation-timing-function: step-end; /* out of sight: drop below, ready to come back up */
   }
-  47.01%,
-  95% {
-    opacity: 0;
-    transform: perspective(80px) rotateX(-90deg);
-    animation-timing-function: step-end;
-  }
-  95.01% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(-90deg);
-    animation-timing-function: cubic-bezier(0, 0, 0.3, 1); /* and settles as it arrives */
+  50.01%,
+  92% {
+    transform: translateY(20px);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
   100% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(0deg);
+    transform: translateY(0);
   }
 }
 
-@keyframes tag-flip-b {
+@keyframes tag-slide-b {
   0%,
-  47% {
-    opacity: 0;
-    transform: perspective(80px) rotateX(-90deg);
-    animation-timing-function: step-end;
+  42% {
+    transform: translateY(20px);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
-  47.01% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(-90deg);
-    animation-timing-function: cubic-bezier(0, 0, 0.3, 1);
+  50%,
+  92% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
   }
-  52%,
-  90% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(0deg);
-    animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
-  }
-  95% {
-    opacity: 1;
-    transform: perspective(80px) rotateX(90deg);
-    animation-timing-function: step-end;
-  }
-  95.01%,
   100% {
-    opacity: 0;
-    transform: perspective(80px) rotateX(90deg);
+    transform: translateY(-20px);
   }
 }
 
