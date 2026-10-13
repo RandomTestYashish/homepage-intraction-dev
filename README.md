@@ -42,7 +42,7 @@ shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info T
 the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
 **V2 – Stroke and banner** (`?v=t2`) starts as the page lands: a red stroke draws once round the Postpaid tile,
 then a banner with a close button opens just under the Postpaid title, over the tabs' lower edge, with a faint
-band of light drifting across it. Every two seconds a soft pulse goes round the stroke, until the tab or the
+band of light drifting across it; it pops in, and swells gently again every five seconds. Every two seconds a soft pulse goes round the stroke, until the tab or the
 banner is touched. Scrolling or the close button removes the banner and the stroke stays; Refresh plays it
 again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).
 **V3 – Smart Icon** (`?v=n3`, the id it had as New inventories V3, whose page and top nav it is built on) puts
