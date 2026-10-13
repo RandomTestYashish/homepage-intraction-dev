@@ -288,10 +288,17 @@
   color: #fff0b8;
 }
 
-/* One word to a 20px line; only the first shows unless the version rolls them */
+/* The words share one place; only the first shows unless the version swaps them */
 .category-tab__tag-words {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+}
+
+.category-tab__tag-words span {
+  grid-area: 1 / 1;
+}
+
+.category-tab__tag-words span + span {
+  opacity: 0;
 }
 
 [data-variant="t1"] .category-tab__tag,
@@ -307,32 +314,68 @@
 }
 
 /*
- * Top Nav V4 (t4): V1's tag with its word rolling: "Unlimited" slides up and out as
- * "Data" comes up from below, then back again, in a loop. The third line repeats the
- * first, so the loop restarts unseen. The light crosses each word once while it rests.
+ * Top Nav V4 (t4): V1's tag with its word changing, quietly: "Unlimited" fades out as it
+ * drifts up a few pixels and "Data" fades in from just below, then back, in a loop.
+ * The light is fainter and slower here, and keeps its own time, apart from the words.
  */
-[data-variant="t4"] .category-tab__tag-words {
-  animation: tag-words 5s infinite;
+[data-variant="t4"] .category-tab__tag-words span {
+  animation: tag-word-a 6s ease-in-out infinite;
+}
+
+[data-variant="t4"] .category-tab__tag-words span + span {
+  animation-name: tag-word-b;
+}
+
+@keyframes tag-word-a {
+  0%,
+  42% {
+    opacity: 1;
+    transform: none;
+  }
+  50%,
+  92% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
+  92.01% {
+    transform: translateY(3px);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes tag-word-b {
+  0%,
+  42% {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  50%,
+  92% {
+    opacity: 1;
+    transform: none;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-3px);
+  }
 }
 
 [data-variant="t4"] .category-tab__tag::after {
-  animation-duration: 2.5s;
+  width: 48px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2) 50%, transparent);
+  animation: tag-glint 7s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite backwards;
 }
 
-@keyframes tag-words {
-  0%,
-  36% {
-    transform: translateY(0);
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+@keyframes tag-glint {
+  0% {
+    transform: translateX(-56px) skewX(-16deg);
   }
-  46%,
-  86% {
-    transform: translateY(-20px);
-    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
-  }
-  96%,
+  30%,
   100% {
-    transform: translateY(-40px);
+    transform: translateX(72px) skewX(-16deg);
   }
 }
 
@@ -362,7 +405,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .category-tab__tag::after,
-  [data-variant="t4"] .category-tab__tag-words {
+  [data-variant="t4"] .category-tab__tag::after,
+  [data-variant="t4"] .category-tab__tag-words span {
     animation: none;
   }
 }

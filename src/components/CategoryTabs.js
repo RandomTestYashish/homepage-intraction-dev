@@ -98,7 +98,7 @@ export function CategoryTabs() {
               }
             </span>${
               tab.ribbon
-                ? `<span class="category-tab__tag"><span class="category-tab__tag-words"><span>${tab.ribbon}</span><span>Data</span><span>${tab.ribbon}</span></span></span>
+                ? `<span class="category-tab__tag"><span class="category-tab__tag-words"><span>${tab.ribbon}</span><span>Data</span></span></span>
                    <svg class="category-tab__stroke" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                      <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" pathLength="1" />
                    </svg>`
