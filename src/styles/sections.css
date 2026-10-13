@@ -276,45 +276,93 @@
   left: 50%;
   translate: -50% 0;
   height: 20px;
-  padding: 4px 8px;
+  padding: 0 8px;
   overflow: hidden;
   border-radius: 28px;
   background: linear-gradient(to top, #000, #2d2b2b);
   font-size: var(--fs-10);
   font-weight: 700;
-  line-height: var(--lh-12);
+  line-height: 20px;
+  text-align: center;
   white-space: nowrap;
   color: #fff0b8;
 }
 
-[data-variant="t1"] .category-tab__tag {
+/* One word to a 20px line; only the first shows unless the version rolls them */
+.category-tab__tag-words {
+  display: flex;
+  flex-direction: column;
+}
+
+[data-variant="t1"] .category-tab__tag,
+[data-variant="t4"] .category-tab__tag {
   display: block;
 }
 
 [data-variant="t1"] .category-tab__ribbon,
-[data-variant="t1"] .category-tab__ribbon-text {
+[data-variant="t1"] .category-tab__ribbon-text,
+[data-variant="t4"] .category-tab__ribbon,
+[data-variant="t4"] .category-tab__ribbon-text {
   display: none;
+}
+
+/*
+ * Top Nav V4 (t4): V1's tag with its word rolling: "Unlimited" slides up and out as
+ * "Data" comes up from below, then back again, in a loop. The third line repeats the
+ * first, so the loop restarts unseen. The light crosses each word once while it rests.
+ */
+[data-variant="t4"] .category-tab__tag-words {
+  animation: tag-words 5s infinite;
+}
+
+[data-variant="t4"] .category-tab__tag::after {
+  animation-duration: 2.5s;
+}
+
+@keyframes tag-words {
+  0%,
+  36% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  46%,
+  86% {
+    transform: translateY(-20px);
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  96%,
+  100% {
+    transform: translateY(-40px);
+  }
 }
 
 .category-tab__tag::after {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
-  width: 30px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.55) 50%, transparent);
-  transform: translateX(-36px) skewX(-16deg); /* a slanted band, soft at both edges */
-  animation: tag-shine 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  width: 40px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(255, 255, 255, 0.16) 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    rgba(255, 255, 255, 0.16) 70%,
+    transparent
+  );
+  transform: translateX(-46px) skewX(-16deg); /* a slanted band, soft at both edges */
+  animation: tag-shine 2.8s cubic-bezier(0.45, 0, 0.55, 1) infinite; /* gathers and slows evenly */
 }
 
 @keyframes tag-shine {
-  55%,
+  60%,
   100% {
-    transform: translateX(70px) skewX(-16deg);
+    transform: translateX(72px) skewX(-16deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .category-tab__tag::after {
+  .category-tab__tag::after,
+  [data-variant="t4"] .category-tab__tag-words {
     animation: none;
   }
 }
@@ -322,8 +370,8 @@
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
  * a red stroke runs four times round the Postpaid tile and, once it has closed, a banner
- * opens under the tabs, over the top of the page, pointing up at that tab. Five seconds
- * later both play again. Scrolling removes the banner and ends the loop; the stroke stays.
+ * opens under the tabs, over the top of the page, pointing up at that tab. It plays
+ * once. Scrolling removes the banner; the stroke stays.
  */
 .category-tab__stroke {
   display: none;

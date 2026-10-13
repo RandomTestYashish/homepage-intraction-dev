@@ -37,15 +37,17 @@ covering it, comes down off it after one second, and slides back up over it as t
 under the header, in a loop, with a chevron at its end. On scroll the tape stays stuck at the top, with the
 category tabs pinned under it.
 
-**V3 – Smart Icon** (`?v=n3`) puts an offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
-
-A third dropdown, "Top Nav", holds versions of the top nav on the V1 homepage: **V1 – Unlimited tag
+A third dropdown, "Top Nav", holds versions of the top nav: **V1 – Unlimited tag
 shimmer** (`?v=t1`) is Homepage interaction V1 with "Unlimited" as a dark Info Tag across the bottom edge of
 the Postpaid tile; a band of light crosses it and rests before the next pass (`src/styles/sections.css`).
 **V2 – Stroke and banner** (`?v=t2`) starts as the page lands: a red stroke runs four times round the Postpaid tile in 1.2
 seconds, then opens a banner under the tabs, over the top card, that points up at Postpaid and has a wide, soft band of
 light drifting slowly across it. It plays once. Scrolling removes the banner and the
 stroke stays; Refresh plays it again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).
+**V3 – Smart Icon** (`?v=n3`, the id it had as New inventories V3, whose page and top nav it is built on) puts
+an animated offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
+**V4 – Unlimited · Data tag** (`?v=t4`) is V1 with the tag's word rolling: "Unlimited" slides up and "Data"
+comes up after it, in a loop, with the light crossing each word.
 
 In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.
 

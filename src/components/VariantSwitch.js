@@ -19,7 +19,6 @@ const GROUPS = [
     variants: [
       { id: "n1", name: "V1", text: "Top Strip" },
       { id: "n2", name: "V2", text: "Ticket tape" },
-      { id: "n3", name: "V3", text: "Smart Icon" },
     ],
   },
   {
@@ -28,6 +27,10 @@ const GROUPS = [
     variants: [
       { id: "t1", name: "V1", text: "Unlimited tag shimmer" },
       { id: "t2", name: "V2", text: "Stroke and banner" },
+      // Began as New inventories V3 and keeps that id: it is built on that group's page and
+      // top nav (App.js treats every "n…" version so), and its old links still open it.
+      { id: "n3", name: "V3", text: "Smart Icon" },
+      { id: "t4", name: "V4", text: "Unlimited · Data tag" },
     ],
   },
 ];

@@ -35,7 +35,7 @@ const boxShape = (tone, line = tone) => `
     <path d="${BOX_FILL}" fill="url(#tab5-fill-${tone})" />
     <path d="${BOX_LINE}" stroke="url(#tab5-line-${line})" />
   </g>`;
-// New inventories V3: a "smart icon", an offer that sits in the row ahead of the first
+// Top Nav V3 (n3): a "smart icon", an offer that sits in the row ahead of the first
 // tab. It is only shown in that version (inventories.css), so elsewhere the row is as before.
 // Its art is a Lottie animation that alternates between the Wi-Fi mark and the offer.
 const SMART_ICON = `
@@ -98,7 +98,7 @@ export function CategoryTabs() {
               }
             </span>${
               tab.ribbon
-                ? `<span class="category-tab__tag">${tab.ribbon}</span>
+                ? `<span class="category-tab__tag"><span class="category-tab__tag-words"><span>${tab.ribbon}</span><span>Data</span><span>${tab.ribbon}</span></span></span>
                    <svg class="category-tab__stroke" width="64" height="64" viewBox="0 0 64 64" fill="none" aria-hidden="true">
                      <rect x="0.5" y="0.5" width="63" height="63" rx="15.5" pathLength="1" />
                    </svg>`

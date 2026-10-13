@@ -5,7 +5,8 @@
  * V1 (n1), Top Strip: a strip for events and new launches lies behind a white sheet that
  * holds the header and the page; --strip-h is how much of it shows above the sheet.
  * V2 (n2), Ticket tape: a line of text runs right to left under the header.
- * V3 (n3), Smart Icon: an offer sits in the tab row, ahead of the first tab.
+ * n3, Smart Icon: an offer sits in the tab row, ahead of the first tab. It is listed as
+ * Top Nav V3 now, and still uses this page and top nav.
  *
  * In V1 and V2 the tab shape starts 16px below whatever is above it; in V3 it follows the
  * header directly, as in its frame.
@@ -388,7 +389,7 @@
   }
 }
 
-/* ---------- V3: Smart Icon ---------- */
+/* ---------- Smart Icon (Top Nav V3) ---------- */
 [data-variant="n3"] {
   --page-top: calc(var(--status-bar-h) + var(--header-h) + 1px); /* the shape's top is at 117px in the frame */
 }
