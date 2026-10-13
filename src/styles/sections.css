@@ -415,9 +415,10 @@
 
 /*
  * Top Nav V2 (t2): Homepage interaction V1 with a nudge towards Postpaid. App.js runs it:
- * a red stroke runs four times round the Postpaid tile and, once it has closed, a banner
- * opens under the tabs, over the top of the page, pointing up at that tab. It plays
- * once. Scrolling removes the banner; the stroke stays.
+ * a red stroke draws itself once round the Postpaid tile and, once it has closed, a banner
+ * opens just under the Postpaid title, over the tabs' lower edge, pointing up at it. Then,
+ * every two seconds, a soft length of deeper red travels once round the stroke, until the
+ * tab or the banner is touched. Scrolling removes the banner; the stroke stays.
  */
 .category-tab__stroke {
   display: none;
@@ -442,29 +443,54 @@
   display: none;
 }
 
-/* The animation belongs to the drawn state only, so starting over clears it at once.
-   Its length is NUDGE_STROKE in App.js. */
-[data-stroke="drawn"] .category-tab__stroke rect {
+/* "drawn" plays the stroke and then the loop; "still" is the finished outline at rest.
+   The animations belong to the drawn state only, so starting over clears them at once.
+   The draw's length is NUDGE_STROKE in App.js. */
+[data-stroke] .category-tab__stroke-line {
   opacity: 1;
   stroke-dasharray: 1 0;
-  animation: tab-stroke 1.2s cubic-bezier(0.4, 0, 0.2, 1) backwards;
 }
 
-/* Four times round the tile: a short length of stroke runs three laps from the top-left
-   corner, then its head carries on round once more while its tail stays put, closing the
-   outline. */
+[data-stroke="drawn"] .category-tab__stroke-line {
+  animation: tab-stroke 1s cubic-bezier(0.45, 0, 0.25, 1) backwards;
+}
+
+/* Once round, from the top-left corner */
 @keyframes tab-stroke {
-  0% {
+  from {
     stroke-dasharray: 0 1;
-    stroke-dashoffset: 0;
   }
-  80% {
-    stroke-dasharray: 0.3 0.7;
-    stroke-dashoffset: -3;
-  }
-  100% {
+  to {
     stroke-dasharray: 1 0;
-    stroke-dashoffset: -3;
+  }
+}
+
+/* The loop: a fifth of the outline, a little deeper and heavier than the stroke, fades in,
+   goes once round in 1.6s and fades out; then two seconds' rest. It first runs two
+   seconds after the stroke has closed. */
+.category-tab__stroke .category-tab__stroke-pulse {
+  stroke: #e01414;
+  stroke-width: 1.5;
+  stroke-dasharray: 0.2 0.8;
+}
+
+[data-stroke="drawn"] .category-tab__stroke-pulse {
+  animation: tab-stroke-pulse 3.6s cubic-bezier(0.45, 0, 0.55, 1) 3s infinite;
+}
+
+@keyframes tab-stroke-pulse {
+  0% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  10%,
+  34% {
+    opacity: 0.55;
+  }
+  44.4%,
+  100% {
+    stroke-dashoffset: -1;
+    opacity: 0;
   }
 }
 
@@ -472,7 +498,7 @@
 .nav-nudge {
   display: none;
   position: relative;
-  z-index: 5; /* over the page, under the tabs */
+  z-index: 11; /* over the tabs, whose lower edge it covers */
   height: 0;
 }
 
@@ -482,7 +508,7 @@
 
 .nav-nudge__card {
   position: absolute;
-  top: 0; /* the pointer's tip meets the tabs, as in the frame */
+  top: -14px; /* up over the tabs' lower edge: the pointer's tip sits just under the Postpaid title */
   left: var(--gutter);
   width: 343px;
   height: 106px;
@@ -522,7 +548,7 @@
 }
 
 .nav-nudge.is-shown .nav-nudge__shine {
-  animation: nav-nudge-shine 4.4s cubic-bezier(0.45, 0, 0.55, 1) 0.4s infinite;
+  animation: nav-nudge-shine 6s cubic-bezier(0.45, 0, 0.55, 1) 0.6s infinite;
 }
 
 @keyframes nav-nudge-shine {
@@ -530,6 +556,26 @@
   100% {
     transform: translateX(400px) skewX(-18deg);
   }
+}
+
+/* Top right of the card's body, over the photo */
+.nav-nudge__close {
+  position: absolute;
+  top: 18px;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.32);
+  color: #fff;
+}
+
+.nav-nudge__close::after {
+  content: "";
+  position: absolute;
+  inset: -12px; /* a 44px tap target */
 }
 
 .nav-nudge__title,

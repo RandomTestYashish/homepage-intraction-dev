@@ -56,7 +56,7 @@ const TICKER_HEIGHT = 33; // the tape is 1px taller than this, so no seam shows 
 const STRIP_DELAY = 1000; // ms the homepage sits at the top before it comes down off the strip
 const NUDGE_VARIANT = "t2"; // Top Nav V2: the stroke around the Postpaid tile, then the banner
 const NUDGE_DELAY = 200; // ms before the stroke starts: as the page lands, once it has painted…
-const NUDGE_STROKE = 1200; // …and how long its four laps of the tile take (tab-stroke in sections.css)
+const NUDGE_STROKE = 1000; // …and how long it takes to go round the tile (tab-stroke in sections.css)
 const NUDGE_TAB = 2; // Postpaid
 
 export function App() {
@@ -65,7 +65,7 @@ export function App() {
   const page = el(`<div class="page scroll-y" tabindex="-1"></div>`);
   const hero = NextBestAction();
   const tabs = CategoryTabs();
-  const nudge = NavNudge(); // only Top Nav V2 shows it
+  const nudge = NavNudge({ onClose: () => (dismissNudge(), settleStroke()) }); // only Top Nav V2 shows it
   page.append(
     tabs,
     nudge,
@@ -177,9 +177,11 @@ export function App() {
     }, STRIP_DELAY);
   }
 
-  // Top Nav V2: as the page lands the stroke runs four times round the Postpaid tile, and when it
-  // has closed the banner opens under the tabs. It plays once. Scrolling removes the banner
-  // for good (until the version is started again); the stroke stays on the tile.
+  // Top Nav V2: as the page lands the stroke draws once round the Postpaid tile, and when it
+  // has closed the banner opens under that tab. From then a soft pulse goes round the stroke
+  // every two seconds (sections.css) until the tab or the banner is touched, which leaves
+  // the stroke at rest. Scrolling, or the banner's close button, removes the banner for good
+  // (until the version is started again); the stroke stays on the tile.
   let nudgeTimer = 0;
   let nudgeDismissed = false;
   function startNudge() {
@@ -206,6 +208,13 @@ export function App() {
     nudgeDismissed = true;
     nudge.hide();
   }
+  function settleStroke() {
+    if (screen.dataset.stroke) screen.dataset.stroke = "still";
+  }
+  nudge.addEventListener("pointerdown", settleStroke);
+  tabs.addEventListener("pointerdown", (event) => {
+    if (event.target.closest(`[data-tab="${NUDGE_TAB}"]`)) settleStroke();
+  });
 
   function layoutChrome() {
     // Top Strip: the sheet, with the header on it, rides up over the strip as the page

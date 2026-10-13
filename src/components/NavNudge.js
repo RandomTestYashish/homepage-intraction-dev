@@ -10,11 +10,11 @@ const outline = (x) =>
   `C0 28.9151 0.000232122 21.3728 4.68652 16.6865C9.37281 12.0002 16.9151 12 32 12H${x - POINTER}L${x} 0Z`;
 
 /**
- * Top Nav V2: a banner under the category tabs, lying over the top of the page, that points
- * up at one of them. It starts hidden; App.js shows it once the stroke around that tab's tile is complete, and
- * removes it when the page is scrolled.
+ * Top Nav V2: a banner just under one of the category tabs, over the tabs' lower edge, that
+ * points up at it. It starts hidden; App.js shows it once the stroke around that tab's tile
+ * is complete, and removes it when the page is scrolled. Its close button calls `onClose`.
  */
-export function NavNudge() {
+export function NavNudge({ onClose }) {
   const root = el(`
     <div class="nav-nudge" aria-hidden="true">
       <div class="nav-nudge__card">
@@ -24,8 +24,8 @@ export function NavNudge() {
               <stop stop-color="#D90C00" /><stop offset="1" stop-color="#FD6400" />
             </linearGradient>
             <linearGradient id="nav-nudge-light" x1="0" x2="1" y1="0" y2="0">
-              <stop stop-color="#fff" stop-opacity="0" /><stop offset="0.3" stop-color="#fff" stop-opacity="0.12" />
-              <stop offset="0.5" stop-color="#fff" stop-opacity="0.3" /><stop offset="0.7" stop-color="#fff" stop-opacity="0.12" />
+              <stop stop-color="#fff" stop-opacity="0" /><stop offset="0.3" stop-color="#fff" stop-opacity="0.05" />
+              <stop offset="0.5" stop-color="#fff" stop-opacity="0.13" /><stop offset="0.7" stop-color="#fff" stop-opacity="0.05" />
               <stop offset="1" stop-color="#fff" stop-opacity="0" />
             </linearGradient>
             <clipPath id="nav-nudge-clip"><path /></clipPath>
@@ -38,11 +38,17 @@ export function NavNudge() {
         <p class="nav-nudge__title">Faster than ever</p>
         <p class="nav-nudge__text">Upgrade at ₹499</p>
         <img class="nav-nudge__photo" src="${asset("nudge-photo.png")}" alt="" />
+        <button class="nav-nudge__close pressable" type="button" aria-label="Close">
+          <svg width="10" height="10" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 1.5l7 7M8.5 1.5l-7 7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+        </button>
       </div>
     </div>
   `);
   const card = root.querySelector(".nav-nudge__card");
-  const shapes = root.querySelectorAll("path"); // the fill, and the same outline clipping the shimmer
+  root.querySelector(".nav-nudge__close").addEventListener("click", onClose);
+  const shapes = root.querySelectorAll(".nav-nudge__shape path"); // the fill, and the same outline clipping the shimmer
 
   /** Opens the banner with its pointer `x` px from the card's left edge. */
   root.show = (x) => {
