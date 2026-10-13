@@ -46,8 +46,9 @@ light drifting slowly across it. It plays once. Scrolling removes the banner and
 stroke stays; Refresh plays it again (`src/components/NavNudge.js`, `startNudge` in `src/App.js`).
 **V3 – Smart Icon** (`?v=n3`, the id it had as New inventories V3, whose page and top nav it is built on) puts
 an animated offer ("Refer & Save ₹300") in the tab row, ahead of the first tab.
-**V4 – Unlimited · Data tag** (`?v=t4`) is V1 with the tag's word changing quietly: "Unlimited" fades out as
-"Data" fades in from just below, and back, in a loop, with a fainter, slower light on its own timing.
+**V4 – Unlimited · Data tag** (`?v=t4`) is V1 with the tag's word flipping like a split-flap board:
+"Unlimited" tips back and "Data" tips forward into its place, and back, in a loop, with a faint light crossing
+each word once while it rests.
 
 In all three, the Prepaid tab opens the same Prepaid page as V5, with its blue tab.
 

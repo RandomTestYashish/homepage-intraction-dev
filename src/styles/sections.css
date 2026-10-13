@@ -314,66 +314,91 @@
 }
 
 /*
- * Top Nav V4 (t4): V1's tag with its word changing, quietly: "Unlimited" fades out as it
- * drifts up a few pixels and "Data" fades in from just below, then back, in a loop.
- * The light is fainter and slower here, and keeps its own time, apart from the words.
+ * Top Nav V4 (t4): V1's tag with its word flipping, like a split-flap board: "Unlimited"
+ * tips back until it is edge-on, and "Data" tips forward into its place, then back, in a
+ * loop. Each half of a flip speeds into and out of the edge-on moment, so the two read as
+ * one turn. A faint light crosses each word once, mid-rest, never during a flip.
  */
 [data-variant="t4"] .category-tab__tag-words span {
-  animation: tag-word-a 6s ease-in-out infinite;
+  animation: tag-flip-a 6s linear infinite;
+  backface-visibility: hidden;
 }
 
 [data-variant="t4"] .category-tab__tag-words span + span {
-  animation-name: tag-word-b;
+  animation-name: tag-flip-b;
 }
 
-@keyframes tag-word-a {
+@keyframes tag-flip-a {
   0%,
   42% {
     opacity: 1;
-    transform: none;
+    transform: perspective(80px) rotateX(0deg);
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 1); /* tips away, gathering pace */
   }
-  50%,
-  92% {
+  47% {
+    opacity: 1;
+    transform: perspective(80px) rotateX(90deg);
+    animation-timing-function: step-end;
+  }
+  47.01%,
+  95% {
     opacity: 0;
-    transform: translateY(-3px);
+    transform: perspective(80px) rotateX(-90deg);
+    animation-timing-function: step-end;
   }
-  92.01% {
-    transform: translateY(3px);
+  95.01% {
+    opacity: 1;
+    transform: perspective(80px) rotateX(-90deg);
+    animation-timing-function: cubic-bezier(0, 0, 0.3, 1); /* and settles as it arrives */
   }
   100% {
     opacity: 1;
-    transform: none;
+    transform: perspective(80px) rotateX(0deg);
   }
 }
 
-@keyframes tag-word-b {
+@keyframes tag-flip-b {
   0%,
-  42% {
+  47% {
     opacity: 0;
-    transform: translateY(3px);
+    transform: perspective(80px) rotateX(-90deg);
+    animation-timing-function: step-end;
   }
-  50%,
-  92% {
+  47.01% {
     opacity: 1;
-    transform: none;
+    transform: perspective(80px) rotateX(-90deg);
+    animation-timing-function: cubic-bezier(0, 0, 0.3, 1);
   }
+  52%,
+  90% {
+    opacity: 1;
+    transform: perspective(80px) rotateX(0deg);
+    animation-timing-function: cubic-bezier(0.5, 0, 1, 1);
+  }
+  95% {
+    opacity: 1;
+    transform: perspective(80px) rotateX(90deg);
+    animation-timing-function: step-end;
+  }
+  95.01%,
   100% {
     opacity: 0;
-    transform: translateY(-3px);
+    transform: perspective(80px) rotateX(90deg);
   }
 }
 
+/* Half the words' loop, so a pass falls in the middle of each word's rest */
 [data-variant="t4"] .category-tab__tag::after {
   width: 48px;
-  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2) 50%, transparent);
-  animation: tag-glint 7s cubic-bezier(0.45, 0, 0.55, 1) 1.2s infinite backwards;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.16) 50%, transparent);
+  animation: tag-glint 3s cubic-bezier(0.45, 0, 0.55, 1) 0.7s infinite backwards;
 }
 
 @keyframes tag-glint {
   0% {
     transform: translateX(-56px) skewX(-16deg);
   }
-  30%,
+  42%,
   100% {
     transform: translateX(72px) skewX(-16deg);
   }
