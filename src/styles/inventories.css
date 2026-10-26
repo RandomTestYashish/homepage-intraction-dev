@@ -31,6 +31,31 @@
   display: block;
 }
 
+/*
+ * On scroll its tabs do what Homepage interaction V1's do, rather than V5's: the tiles
+ * shrink to small icons under the titles' line instead of fading away, and land where
+ * V1's land (tile 14–56px, title from 64px). The folder shape still leaves, so the
+ * selected tab takes its tile back as it goes.
+ */
+[data-variant="n1"] .category-tabs {
+  --compact-pad: 4px; /* the tile is already 10px down, so 4px more puts it at V1's 14px */
+  --compact-distance: 14px; /* the titles rise 10px, to V1's 64px */
+}
+
+[data-variant="n1"] .category-tab__scaler {
+  transform: translateY(calc(var(--compact) * var(--compact-pad))) scale(calc(1 - 0.34 * var(--compact)));
+  opacity: 1;
+}
+
+[data-variant="n1"] .category-tab__selected {
+  display: block;
+}
+
+[data-variant="n1"] .category-tab[aria-selected="true"] .category-tab__selected {
+  opacity: var(--compact);
+  transition: none; /* it follows the scroll's own spring */
+}
+
 /* ---------- The strip ---------- */
 .top-strip {
   top: 0;
